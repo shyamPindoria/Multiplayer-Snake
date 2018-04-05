@@ -1,10 +1,10 @@
 
 public class Server {
 
-	private int[][] GameBoard;
+	private GameBoard board;
 	
 	public Server() {
-		this.GameBoard = new int[100][100];
+		this.board = new GameBoard(100, 100);
 	}
 	
 	
