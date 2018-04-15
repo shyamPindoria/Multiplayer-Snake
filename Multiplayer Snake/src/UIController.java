@@ -1,6 +1,7 @@
 import java.awt.BorderLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 import java.awt.CardLayout;
 import javax.swing.JLabel;
@@ -16,6 +17,7 @@ import java.awt.Color;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JTextField;
 
 public class UIController extends JFrame implements ActionListener {
 
@@ -29,7 +31,6 @@ public class UIController extends JFrame implements ActionListener {
 	private JPanel gamePane;
 	private JPanel startPane;
 	private JPanel loginPane;
-
 	private JPanel boardPane;
 	private JPanel scorePane;
 	
@@ -39,10 +40,16 @@ public class UIController extends JFrame implements ActionListener {
 	private JLabel labelPlayer2Score;
 	private JLabel labelPlayer3Score;
 	private JLabel labelPlayer4Score;
+	
 	private JComboBox<Integer> comboBoxNumberOfPlayers;
-	private JButton btnStart;
+	
+	private JLabel[] invalidLoginDetails;
+	private JTextField[] usernames;
+	private JPasswordField[] passwords;
+	
+	private int loggedInPlayers = 0;
 
-	public UIController() {
+ 	public UIController() {
 		
 		this.setTitle("Multiplayer Snake");
 
@@ -105,25 +112,129 @@ public class UIController extends JFrame implements ActionListener {
 		gbc_comboBoxNumberOfPlayers.gridy = 1;
 		this.startPane.add(this.comboBoxNumberOfPlayers, gbc_comboBoxNumberOfPlayers);
 		
-		this.btnStart = new JButton("Start");
+		JButton btnStart = new JButton("Start");
 		GridBagConstraints gbc_btnStart = new GridBagConstraints();
 		gbc_btnStart.gridwidth = 2;
 		gbc_btnStart.insets = new Insets(0, 0, 0, 5);
 		gbc_btnStart.gridx = 0;
 		gbc_btnStart.gridy = 2;
-		this.btnStart.addActionListener(this);
-		this.btnStart.setActionCommand("Start");
-		this.startPane.add(this.btnStart, gbc_btnStart);
-		return startPane;
+		btnStart.addActionListener(this);
+		btnStart.setActionCommand("Start");
+		this.startPane.add(btnStart, gbc_btnStart);
+		return this.startPane;
 
 	}
 
 	private JPanel createLoginPane() {
 		
 		this.loginPane = new JPanel();
-		System.out.println(this.comboBoxNumberOfPlayers.getSelectedItem());
+		GridBagLayout gbl_loginPane = new GridBagLayout();
+		gbl_loginPane.columnWidths = new int[]{0, 0, 0};
+		gbl_loginPane.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
+		gbl_loginPane.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
+		gbl_loginPane.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
+		this.loginPane.setLayout(gbl_loginPane);
+		
+		JLabel lblLogin = new JLabel("Login");
+		lblLogin.setFont(new Font("Lucida Grande", Font.PLAIN, 36));
+		GridBagConstraints gbc_lblLogin = new GridBagConstraints();
+		gbc_lblLogin.gridwidth = 2;
+		gbc_lblLogin.insets = new Insets(0, 0, 5, 0);
+		gbc_lblLogin.gridx = 0;
+		gbc_lblLogin.gridy = 0;
+		this.loginPane.add(lblLogin, gbc_lblLogin);
+		
+		for (int i = 0; i < Game.numberOfPlayers; i++) {
+			
+			JPanel playerLoginPane = createPlayerLoginPane(i);
+			GridBagConstraints gbc_playerLoginPane = new GridBagConstraints();
+			gbc_playerLoginPane.insets = new Insets(0, 0, 0, 5);
+			int x = i % 2 == 0 ? 0 : 1;
+			int y = i < 2 ? 1 : 2;
+			gbc_playerLoginPane.gridx = x;
+			gbc_playerLoginPane.gridy = y;
+			this.loginPane.add(playerLoginPane, gbc_playerLoginPane);
+			
+		}
+		
+		JButton btnLogin = new JButton("Login");
+		GridBagConstraints gbc_btnLogin = new GridBagConstraints();
+		gbc_btnLogin.insets = new Insets(0, 0, 5, 0);
+		gbc_btnLogin.anchor = GridBagConstraints.NORTH;
+		gbc_btnLogin.gridwidth = 2;
+		gbc_btnLogin.gridx = 0;
+		gbc_btnLogin.gridy = 5;
+		btnLogin.addActionListener(this);
+		btnLogin.setActionCommand("Login");
+		this.loginPane.add(btnLogin, gbc_btnLogin);
+		
 		return this.loginPane;
 		
+	}
+	
+	private JPanel createPlayerLoginPane(int player) {
+		
+		JPanel playerLoginPane = new JPanel();
+		GridBagLayout gbl_playerLoginPane = new GridBagLayout();
+		gbl_playerLoginPane.columnWidths = new int[]{0};
+		gbl_playerLoginPane.rowHeights = new int[]{0};
+		gbl_playerLoginPane.columnWeights = new double[]{Double.MIN_VALUE};
+		gbl_playerLoginPane.rowWeights = new double[]{Double.MIN_VALUE};
+		playerLoginPane.setLayout(gbl_playerLoginPane);
+		
+		JLabel lblPlayer = new JLabel("Player " + (player+1));
+		GridBagConstraints gbc_lblPlayer = new GridBagConstraints();
+		gbc_lblPlayer.gridwidth = 2;
+		gbc_lblPlayer.insets = new Insets(50, 0, 5, 0);
+		gbc_lblPlayer.gridx = 0;
+		gbc_lblPlayer.gridy = 0;
+		playerLoginPane.add(lblPlayer, gbc_lblPlayer);
+		
+		this.invalidLoginDetails[player] = new JLabel("Invalid username or password");
+		this.invalidLoginDetails[player].setForeground(Color.RED);
+		this.invalidLoginDetails[player].setVisible(false);
+		GridBagConstraints gbc_lblInvalidLogin = new GridBagConstraints();
+		gbc_lblInvalidLogin.gridwidth = 2;
+		gbc_lblInvalidLogin.insets = new Insets(0, 0, 5, 0);
+		gbc_lblInvalidLogin.gridx = 0;
+		gbc_lblInvalidLogin.gridy = 1;
+		playerLoginPane.add(this.invalidLoginDetails[player], gbc_lblInvalidLogin);
+		
+		JLabel lblUsername = new JLabel("Username:");
+		GridBagConstraints gbc_lblUsername = new GridBagConstraints();
+		gbc_lblUsername.anchor = GridBagConstraints.EAST;
+		gbc_lblUsername.insets = new Insets(0, 0, 5, 5);
+		gbc_lblUsername.gridx = 0;
+		gbc_lblUsername.gridy = 2;
+		playerLoginPane.add(lblUsername, gbc_lblUsername);
+		
+		this.usernames[player] = new JTextField();
+		GridBagConstraints gbc_textFieldUsername = new GridBagConstraints();
+		gbc_textFieldUsername.insets = new Insets(0, 0, 5, 0);
+		gbc_textFieldUsername.anchor = GridBagConstraints.WEST;
+		gbc_textFieldUsername.gridx = 1;
+		gbc_textFieldUsername.gridy = 2;
+		this.usernames[player].setColumns(10);
+		playerLoginPane.add(this.usernames[player], gbc_textFieldUsername);
+		
+		JLabel lblPassword = new JLabel("Password:");
+		GridBagConstraints gbc_lblPassword = new GridBagConstraints();
+		gbc_lblPassword.anchor = GridBagConstraints.EAST;
+		gbc_lblPassword.insets = new Insets(0, 0, 5, 5);
+		gbc_lblPassword.gridx = 0;
+		gbc_lblPassword.gridy = 3;
+		playerLoginPane.add(lblPassword, gbc_lblPassword);
+		
+		this.passwords[player] = new JPasswordField();
+		GridBagConstraints gbc_textFieldPassword = new GridBagConstraints();
+		gbc_textFieldPassword.insets = new Insets(0, 0, 5, 0);
+		gbc_textFieldPassword.anchor = GridBagConstraints.WEST;
+		gbc_textFieldPassword.gridx = 1;
+		gbc_textFieldPassword.gridy = 3;
+		this.passwords[player].setColumns(10);
+		playerLoginPane.add(this.passwords[player], gbc_textFieldPassword);
+		
+		return playerLoginPane;
 	}
 	
 	private JPanel createGamePane() {
@@ -209,10 +320,60 @@ public class UIController extends JFrame implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
+		// If start button was clicked
 		if (e.getActionCommand().equals("Start")) {
+			// Number of players
+			Game.numberOfPlayers = (int) this.comboBoxNumberOfPlayers.getSelectedItem();
+			// Initialize arrays
+			this.invalidLoginDetails = new JLabel[Game.numberOfPlayers];
+			this.usernames = new JTextField[Game.numberOfPlayers];
+			this.passwords = new JPasswordField[Game.numberOfPlayers];
+			// Create login pane
 			this.contentPane.add(this.createLoginPane(), "loginPane");
+			
+			// Show login pane
 			this.contentCardLayout.show(this.contentPane, "loginPane");
-			this.createLoginPane();
+		
+		// Login button clicked
+		} else if (e.getActionCommand().equals("Login")) {
+			
+			// Reset all invalid details label
+			for (JLabel lbl : this.invalidLoginDetails) {
+				lbl.setVisible(false);
+			}
+			
+			// Arrays to be passed to Game class
+			String[] users = new String[Game.numberOfPlayers];
+			String[] pass = new String[Game.numberOfPlayers];
+
+			// Get the usernames and passwords from the textfields
+			for (int i = 0; i < Game.numberOfPlayers; i++) {
+					users[i] = this.usernames[i].getText();
+					pass[i] = new String(this.passwords[i].getPassword());
+			}
+			
+			// All users logged
+			boolean allLoggedIn = true;
+			
+			// Login users
+			boolean[] loggedIn = Game.loginPlayers(users, pass);
+
+			// Check if all players have successfully logged in
+			for (int i = 0; i < Game.numberOfPlayers; i++) {
+
+				if (!loggedIn[i]) {
+					allLoggedIn = false;
+					this.invalidLoginDetails[i].setVisible(true);
+				}
+				
+			}
+			
+			// Show game pan if all have logged in
+			if (allLoggedIn) {
+				this.contentCardLayout.show(this.contentPane, "gamePane");
+			}
+
 		}
 		
 	}
