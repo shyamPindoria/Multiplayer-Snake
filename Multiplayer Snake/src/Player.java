@@ -1,5 +1,5 @@
 
-public abstract class Player {
+public abstract class Player implements Runnable{
 
 	private String name;
 	private int score;

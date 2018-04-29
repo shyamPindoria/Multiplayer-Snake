@@ -1,11 +1,27 @@
+import java.util.ArrayList;
 
 public class Game {
 	
 	public static int numberOfPlayers;
+	private static GameBoard board;
+	private static MapDB db;
+	private static UIController ui;
+	
+	private static Server server;
+	private static ArrayList<Player> players;
+	
 
 	public static void main(String[] args) {
 		
-		UIController ui = new UIController();
+		ui = new UIController();
+		
+		board = new GameBoard(100, 100);
+		
+		db = new MapDB();
+		
+		server = new Server();
+		
+		players = new ArrayList<Player>();
 		
 	}
 	
@@ -14,10 +30,8 @@ public class Game {
 		boolean[] loggedIn = new boolean[Game.numberOfPlayers];
 		
 		for (int i = 0; i < Game.numberOfPlayers; i++) {
-			// TODO add the player to a login queue, a thread will then retrieve a player from the queue
-			// The thread will check if the details are correct
-			System.out.println(usernames[i] + " logged in. Password: " + passwords[i]);
-			loggedIn[i] = true;
+			
+			loggedIn[i] = server.loginPlayer(usernames[i], passwords[i]);
 		}
 		
 		return loggedIn;
