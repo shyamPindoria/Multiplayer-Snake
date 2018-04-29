@@ -4,7 +4,7 @@ public class Game {
 	
 	public static int numberOfPlayers;
 	private static GameBoard board;
-	private static MapDB db;
+//	public static MapDB db;
 	private static UIController ui;
 	
 	private static Server server;
@@ -16,8 +16,6 @@ public class Game {
 		ui = new UIController();
 		
 		board = new GameBoard(100, 100);
-		
-		db = new MapDB();
 		
 		server = new Server();
 		
