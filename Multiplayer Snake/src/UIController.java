@@ -46,8 +46,6 @@ public class UIController extends JFrame implements ActionListener {
 	private JLabel[] invalidLoginDetails;
 	private JTextField[] usernames;
 	private JPasswordField[] passwords;
-	
-	private int loggedInPlayers = 0;
 
  	public UIController() {
 		
@@ -343,21 +341,22 @@ public class UIController extends JFrame implements ActionListener {
 				lbl.setVisible(false);
 			}
 			
-			// Arrays to be passed to Game class
-			String[] users = new String[Game.numberOfPlayers];
-			String[] pass = new String[Game.numberOfPlayers];
-
+			// Array to be passed to Game class
+			Credentials[] credentials = new Credentials[Game.numberOfPlayers];
+			
 			// Get the usernames and passwords from the textfields
 			for (int i = 0; i < Game.numberOfPlayers; i++) {
-					users[i] = this.usernames[i].getText();
-					pass[i] = new String(this.passwords[i].getPassword());
+				
+				// Create new credentials
+				credentials[i] = new Credentials(this.usernames[i].getText(), new String(this.passwords[i].getPassword()));
+					
 			}
 			
 			// All users logged
 			boolean allLoggedIn = true;
 			
 			// Login users
-			boolean[] loggedIn = Game.loginPlayers(users, pass);
+			boolean[] loggedIn = Game.loginPlayers(credentials);
 
 			// Check if all players have successfully logged in
 			for (int i = 0; i < Game.numberOfPlayers; i++) {
