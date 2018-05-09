@@ -1,21 +1,37 @@
-import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class Server {
 
 	private ExecutorService pool;
-	
-	// Stores the results of the login process
-	private ArrayList<Future<Boolean>> futures;
 
 	public Server() {
 		
 		this.pool = Executors.newFixedThreadPool(4);
 		
-		this.futures = new ArrayList<Future<Boolean>>();
+		update();
 		
+	}
+	
+	public void update() {
+		
+		while (!Game.gameOver) {
+			
+			try {
+				HumanPlayer player = Game.buffer_HumanPlayers.take();
+
+				if (!player.getCredentials().isValid()) {
+					loginPlayer(player);
+				}
+
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+
+		}
+
 	}
 	
 	/**
@@ -26,47 +42,16 @@ public class Server {
 		this.pool.shutdown();
 		
 	}
-	
-	/**
-	 * Clears the future array
-	 */
-	public void clearFutures() {
-		
-		this.futures.clear();
-		
-	}
 
 	/**
 	 * Logs in a player by submitting the credentials to the ExecutorService
 	 * @param credentials Player credentials to check
 	 */
-	public void loginPlayer(Credentials credentials) {
+	public void loginPlayer(HumanPlayer player) {
 		
-		// Create a future and add it to the ArrayList of futures
-		Future<Boolean> future = pool.submit(credentials);
+		// Submit the player to the executor service
+		pool.submit(player.getCredentials());
 		
-		this.futures.add(future);
-		
-	}
-	
-	/**
-	 * This will return the futures
-	 * @return A boolean[] containing the values of the futures
-	 */
-	public boolean[] getLoginResults() {
-		
-		boolean[] results = new boolean[Game.numberOfPlayers];
-		
-		for (int i = 0; i < Game.numberOfPlayers; i++) {
-			try {
-				// Get the future value and add it to the array
-				results[i] = this.futures.get(i).get();
-			} catch (Exception e) {
-				e.printStackTrace();
-			} 
-		}
-		
-		return results;
 	}
 
 }

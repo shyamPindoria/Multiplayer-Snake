@@ -213,6 +213,7 @@ public class UIController extends JFrame implements ActionListener {
 		gbc_textFieldUsername.gridx = 1;
 		gbc_textFieldUsername.gridy = 2;
 		this.usernames[player].setColumns(10);
+		this.usernames[player].setText("user" + (player + 1));
 		playerLoginPane.add(this.usernames[player], gbc_textFieldUsername);
 		
 		JLabel lblPassword = new JLabel("Password:");
@@ -230,6 +231,7 @@ public class UIController extends JFrame implements ActionListener {
 		gbc_textFieldPassword.gridx = 1;
 		gbc_textFieldPassword.gridy = 3;
 		this.passwords[player].setColumns(10);
+		this.passwords[player].setText("password" + (player + 1));
 		playerLoginPane.add(this.passwords[player], gbc_textFieldPassword);
 		
 		return playerLoginPane;
@@ -315,6 +317,26 @@ public class UIController extends JFrame implements ActionListener {
 		return this.boardPane;
 	}
 
+	public void showGameBoard() {
+		// All users logged
+		boolean allLoggedIn = true;
+
+		// Check if all players have successfully logged in
+		for (int i = 0; i < Game.numberOfPlayers; i++) {
+
+			if (!Game.humanPlayers.get(i).getCredentials().isValid()) {
+				allLoggedIn = false;
+				this.invalidLoginDetails[i].setVisible(true);
+				System.out.println(Game.humanPlayers.get(i).getName() + "'s login details are invalid. Result: " + Game.humanPlayers.get(i).getCredentials().isValid());
+			}
+			
+		}
+		
+		// Show game pan if all have logged in
+		if (allLoggedIn) {
+			this.contentCardLayout.show(this.contentPane, "gamePane");
+		}
+	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -352,26 +374,8 @@ public class UIController extends JFrame implements ActionListener {
 					
 			}
 			
-			// All users logged
-			boolean allLoggedIn = true;
-			
 			// Login users
-			boolean[] loggedIn = Game.loginPlayers(credentials);
-
-			// Check if all players have successfully logged in
-			for (int i = 0; i < Game.numberOfPlayers; i++) {
-
-				if (!loggedIn[i]) {
-					allLoggedIn = false;
-					this.invalidLoginDetails[i].setVisible(true);
-				}
-				
-			}
-			
-			// Show game pan if all have logged in
-			if (allLoggedIn) {
-				this.contentCardLayout.show(this.contentPane, "gamePane");
-			}
+			Game.createPlayers(credentials);
 
 		}
 		

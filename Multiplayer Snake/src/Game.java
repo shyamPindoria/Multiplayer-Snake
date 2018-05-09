@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ArrayBlockingQueue;
 
 public class Game {
 	
@@ -9,7 +9,11 @@ public class Game {
 	private static UIController ui;
 	
 	private static Server server;
-	private static ArrayList<Player> players;
+	public static ArrayList<HumanPlayer> humanPlayers;
+	
+	public static ArrayBlockingQueue<HumanPlayer> buffer_HumanPlayers;
+	
+	public static boolean gameOver;
 	
 	public static void main(String[] args) {
 		
@@ -17,36 +21,64 @@ public class Game {
 		
 		board = new GameBoard(100, 100);
 		
-		server = new Server();
-		
-		players = new ArrayList<Player>();
+		humanPlayers = new ArrayList<HumanPlayer>();
 		
 		db = new MapDB();
+		
+		buffer_HumanPlayers = new ArrayBlockingQueue<HumanPlayer>(4);
+		
+		gameOver = false;
+		
+		server = new Server();
+		
 	}
 	
 	/**
 	 * Logs in the players
 	 * @param credentials Credentials of the players
+	 * @return 
 	 * @return boolean[] containing the results of the login process
 	 */
-	public static boolean[] loginPlayers (Credentials[] credentials) {
-		
-		boolean[] loggedIn = new boolean[Game.numberOfPlayers];
-		
-		server.clearFutures();
+	public static void createPlayers (Credentials[] credentials) {
 		
 		for (int i = 0; i < Game.numberOfPlayers; i++) {
 			
-			server.loginPlayer(credentials[i]);
+			HumanPlayer player = new HumanPlayer(i, credentials[i]);
+			
+			int playerAlreadyAdded = humanPlayers.indexOf(player);
+			
+			if (playerAlreadyAdded == -1) {
+				humanPlayers.add(player);
+			} else {
+				humanPlayers.set(playerAlreadyAdded, player);
+			}
+			
+			try {
+				buffer_HumanPlayers.put(player);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 
 		}
 		
-		loggedIn = server.getLoginResults();
 		
-		//server.shutdownExecutorService();
+		try {
+			System.out.println("Thread Sleeping");
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		return loggedIn;
+	
+		ui.showGameBoard();
+		
 		
 	}
+	
+	public static UIController getUI() {
+		return ui;
+	}
+	
 	
 }
