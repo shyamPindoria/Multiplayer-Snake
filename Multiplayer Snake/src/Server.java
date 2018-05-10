@@ -1,36 +1,36 @@
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Server {
+public class Server implements Runnable{
 
 	private ExecutorService pool;
+	
+	private Thread serverThread;
 
 	public Server() {
 		
 		this.pool = Executors.newFixedThreadPool(4);
-		
-		update();
+		this.serverThread = new Thread(this);
+		this.serverThread.start();
 		
 	}
 	
 	public void update() {
 		
-		while (!Game.gameOver) {
-			
+		
 			try {
-				HumanPlayer player = Game.buffer_HumanPlayers.take();
+				HumanPlayer player = Game.buffer_HumanPlayers.poll();
 
-				if (!player.getCredentials().isValid()) {
+				if (player != null && !player.getCredentials().isValid()) {
 					loginPlayer(player);
 				}
 
-			} catch (InterruptedException e) {
+			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
-
-		}
+			Game.getUI().showGameBoard();
 
 	}
 	
@@ -51,6 +51,16 @@ public class Server {
 		
 		// Submit the player to the executor service
 		pool.submit(player.getCredentials());
+		
+	}
+
+	
+	@Override
+	public void run() {
+		while (!Game.gameOver) {
+			update();
+			
+		}
 		
 	}
 

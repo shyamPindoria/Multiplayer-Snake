@@ -16,6 +16,8 @@ public class Game {
 	public static boolean gameOver;
 	
 	public static void main(String[] args) {
+
+		gameOver = false;
 		
 		ui = new UIController();
 		
@@ -26,8 +28,6 @@ public class Game {
 		db = new MapDB();
 		
 		buffer_HumanPlayers = new ArrayBlockingQueue<HumanPlayer>(4);
-		
-		gameOver = false;
 		
 		server = new Server();
 		
@@ -60,20 +60,6 @@ public class Game {
 			}
 
 		}
-		
-		
-		try {
-			System.out.println("Thread Sleeping");
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	
-		ui.showGameBoard();
-		
-		
 	}
 	
 	public static UIController getUI() {

@@ -1,12 +1,14 @@
 
 public class Credentials implements Runnable{
 
+	private int playerID;
 	private String username;
 	private String password;
 	
 	private boolean valid;
 	
-	public Credentials(String username, String password) {
+	public Credentials(int playerID, String username, String password) {
+		this.playerID = playerID;
 		this.username = username;
 		this.password = password;
 		this.valid = false;
@@ -28,6 +30,8 @@ public class Credentials implements Runnable{
 		} else {
 			this.valid = false;
 		}
+		
+		Game.getUI().setInvalidLoginDetails(this.playerID, this.valid);
 		
 	}
 

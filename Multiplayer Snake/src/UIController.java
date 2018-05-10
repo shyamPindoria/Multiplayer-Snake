@@ -18,6 +18,7 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+import java.awt.GridLayout;
 
 public class UIController extends JFrame implements ActionListener {
 
@@ -33,22 +34,22 @@ public class UIController extends JFrame implements ActionListener {
 	private JPanel loginPane;
 	private JPanel boardPane;
 	private JPanel scorePane;
-	
+
 	private CardLayout contentCardLayout;
 
 	private JLabel labelPlayer1Score;
 	private JLabel labelPlayer2Score;
 	private JLabel labelPlayer3Score;
 	private JLabel labelPlayer4Score;
-	
+
 	private JComboBox<Integer> comboBoxNumberOfPlayers;
-	
+
 	private JLabel[] invalidLoginDetails;
 	private JTextField[] usernames;
 	private JPasswordField[] passwords;
 
- 	public UIController() {
-		
+	public UIController() {
+
 		this.setTitle("Multiplayer Snake");
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -57,17 +58,17 @@ public class UIController extends JFrame implements ActionListener {
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.setContentPane(this.contentPane);
-		
+
 		this.contentCardLayout = new CardLayout(0, 0);
-		
+
 		this.contentPane.setLayout(this.contentCardLayout);
 
 		this.contentPane.add(this.createStartPane(), "startPane");
 
 		this.contentPane.add(this.createGamePane(), "gamePane");
-		
+
 		this.contentCardLayout.show(this.contentPane, "startPane");
-		
+
 
 		this.setVisible(true);
 
@@ -82,7 +83,7 @@ public class UIController extends JFrame implements ActionListener {
 		gbl_startPane.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
 		gbl_startPane.rowWeights = new double[]{1.0, 0.0, 0.0, Double.MIN_VALUE};
 		this.startPane.setLayout(gbl_startPane);
-		
+
 		JLabel labelTitle = new JLabel("Multiplayer Snake");
 		labelTitle.setFont(new Font("Lucida Grande", Font.PLAIN, 36));
 		GridBagConstraints gbc_labelTitle = new GridBagConstraints();
@@ -91,7 +92,7 @@ public class UIController extends JFrame implements ActionListener {
 		gbc_labelTitle.gridx = 0;
 		gbc_labelTitle.gridy = 0;
 		this.startPane.add(labelTitle, gbc_labelTitle);
-		
+
 		JLabel labelNumberOfPlayers = new JLabel("Select the number of players:");
 		GridBagConstraints gbc_labelNumberOfPlayers = new GridBagConstraints();
 		gbc_labelNumberOfPlayers.anchor = GridBagConstraints.EAST;
@@ -99,7 +100,7 @@ public class UIController extends JFrame implements ActionListener {
 		gbc_labelNumberOfPlayers.gridx = 0;
 		gbc_labelNumberOfPlayers.gridy = 1;
 		this.startPane.add(labelNumberOfPlayers, gbc_labelNumberOfPlayers);
-		
+
 		this.comboBoxNumberOfPlayers = new JComboBox<Integer>();
 		this.comboBoxNumberOfPlayers.setModel(new DefaultComboBoxModel<Integer>(new Integer[] {1, 2, 3, 4}));
 		this.comboBoxNumberOfPlayers.setSelectedIndex(0);
@@ -109,7 +110,7 @@ public class UIController extends JFrame implements ActionListener {
 		gbc_comboBoxNumberOfPlayers.gridx = 1;
 		gbc_comboBoxNumberOfPlayers.gridy = 1;
 		this.startPane.add(this.comboBoxNumberOfPlayers, gbc_comboBoxNumberOfPlayers);
-		
+
 		JButton btnStart = new JButton("Start");
 		GridBagConstraints gbc_btnStart = new GridBagConstraints();
 		gbc_btnStart.gridwidth = 2;
@@ -124,7 +125,7 @@ public class UIController extends JFrame implements ActionListener {
 	}
 
 	private JPanel createLoginPane() {
-		
+
 		this.loginPane = new JPanel();
 		GridBagLayout gbl_loginPane = new GridBagLayout();
 		gbl_loginPane.columnWidths = new int[]{0, 0, 0};
@@ -132,7 +133,7 @@ public class UIController extends JFrame implements ActionListener {
 		gbl_loginPane.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
 		gbl_loginPane.rowWeights = new double[]{1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
 		this.loginPane.setLayout(gbl_loginPane);
-		
+
 		JLabel lblLogin = new JLabel("Login");
 		lblLogin.setFont(new Font("Lucida Grande", Font.PLAIN, 36));
 		GridBagConstraints gbc_lblLogin = new GridBagConstraints();
@@ -141,9 +142,9 @@ public class UIController extends JFrame implements ActionListener {
 		gbc_lblLogin.gridx = 0;
 		gbc_lblLogin.gridy = 0;
 		this.loginPane.add(lblLogin, gbc_lblLogin);
-		
+
 		for (int i = 0; i < Game.numberOfPlayers; i++) {
-			
+
 			JPanel playerLoginPane = createPlayerLoginPane(i);
 			GridBagConstraints gbc_playerLoginPane = new GridBagConstraints();
 			gbc_playerLoginPane.insets = new Insets(0, 0, 0, 5);
@@ -152,9 +153,9 @@ public class UIController extends JFrame implements ActionListener {
 			gbc_playerLoginPane.gridx = x;
 			gbc_playerLoginPane.gridy = y;
 			this.loginPane.add(playerLoginPane, gbc_playerLoginPane);
-			
+
 		}
-		
+
 		JButton btnLogin = new JButton("Login");
 		GridBagConstraints gbc_btnLogin = new GridBagConstraints();
 		gbc_btnLogin.insets = new Insets(0, 0, 5, 0);
@@ -165,13 +166,13 @@ public class UIController extends JFrame implements ActionListener {
 		btnLogin.addActionListener(this);
 		btnLogin.setActionCommand("Login");
 		this.loginPane.add(btnLogin, gbc_btnLogin);
-		
+
 		return this.loginPane;
-		
+
 	}
-	
+
 	private JPanel createPlayerLoginPane(int player) {
-		
+
 		JPanel playerLoginPane = new JPanel();
 		GridBagLayout gbl_playerLoginPane = new GridBagLayout();
 		gbl_playerLoginPane.columnWidths = new int[]{0};
@@ -179,7 +180,7 @@ public class UIController extends JFrame implements ActionListener {
 		gbl_playerLoginPane.columnWeights = new double[]{Double.MIN_VALUE};
 		gbl_playerLoginPane.rowWeights = new double[]{Double.MIN_VALUE};
 		playerLoginPane.setLayout(gbl_playerLoginPane);
-		
+
 		JLabel lblPlayer = new JLabel("Player " + (player+1));
 		GridBagConstraints gbc_lblPlayer = new GridBagConstraints();
 		gbc_lblPlayer.gridwidth = 2;
@@ -187,7 +188,7 @@ public class UIController extends JFrame implements ActionListener {
 		gbc_lblPlayer.gridx = 0;
 		gbc_lblPlayer.gridy = 0;
 		playerLoginPane.add(lblPlayer, gbc_lblPlayer);
-		
+
 		this.invalidLoginDetails[player] = new JLabel("Invalid username or password");
 		this.invalidLoginDetails[player].setForeground(Color.RED);
 		this.invalidLoginDetails[player].setVisible(false);
@@ -197,7 +198,7 @@ public class UIController extends JFrame implements ActionListener {
 		gbc_lblInvalidLogin.gridx = 0;
 		gbc_lblInvalidLogin.gridy = 1;
 		playerLoginPane.add(this.invalidLoginDetails[player], gbc_lblInvalidLogin);
-		
+
 		JLabel lblUsername = new JLabel("Username:");
 		GridBagConstraints gbc_lblUsername = new GridBagConstraints();
 		gbc_lblUsername.anchor = GridBagConstraints.EAST;
@@ -205,7 +206,7 @@ public class UIController extends JFrame implements ActionListener {
 		gbc_lblUsername.gridx = 0;
 		gbc_lblUsername.gridy = 2;
 		playerLoginPane.add(lblUsername, gbc_lblUsername);
-		
+
 		this.usernames[player] = new JTextField();
 		GridBagConstraints gbc_textFieldUsername = new GridBagConstraints();
 		gbc_textFieldUsername.insets = new Insets(0, 0, 5, 0);
@@ -215,7 +216,7 @@ public class UIController extends JFrame implements ActionListener {
 		this.usernames[player].setColumns(10);
 		this.usernames[player].setText("user" + (player + 1));
 		playerLoginPane.add(this.usernames[player], gbc_textFieldUsername);
-		
+
 		JLabel lblPassword = new JLabel("Password:");
 		GridBagConstraints gbc_lblPassword = new GridBagConstraints();
 		gbc_lblPassword.anchor = GridBagConstraints.EAST;
@@ -223,7 +224,7 @@ public class UIController extends JFrame implements ActionListener {
 		gbc_lblPassword.gridx = 0;
 		gbc_lblPassword.gridy = 3;
 		playerLoginPane.add(lblPassword, gbc_lblPassword);
-		
+
 		this.passwords[player] = new JPasswordField();
 		GridBagConstraints gbc_textFieldPassword = new GridBagConstraints();
 		gbc_textFieldPassword.insets = new Insets(0, 0, 5, 0);
@@ -233,10 +234,10 @@ public class UIController extends JFrame implements ActionListener {
 		this.passwords[player].setColumns(10);
 		this.passwords[player].setText("password" + (player + 1));
 		playerLoginPane.add(this.passwords[player], gbc_textFieldPassword);
-		
+
 		return playerLoginPane;
 	}
-	
+
 	private JPanel createGamePane() {
 
 		this.gamePane = new JPanel();
@@ -250,7 +251,7 @@ public class UIController extends JFrame implements ActionListener {
 	}
 
 	private JPanel createScorePane() {
-		
+
 		this.scorePane = new JPanel();
 		this.scorePane.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 
@@ -279,7 +280,7 @@ public class UIController extends JFrame implements ActionListener {
 		gbc_labelPlayer1Score.gridx = 0;
 		gbc_labelPlayer1Score.gridy = 1;
 		this.scorePane.add(this.labelPlayer1Score, gbc_labelPlayer1Score);
-		
+
 
 		this.labelPlayer2Score = new JLabel("Player 2: 0");
 		GridBagConstraints gbc_labelPlayer2Score = new GridBagConstraints();
@@ -313,34 +314,43 @@ public class UIController extends JFrame implements ActionListener {
 	private JPanel createBoardPane() {
 		this.boardPane = new JPanel();
 		this.boardPane.setBorder(new LineBorder(new Color(0, 0, 0)));
-		this.boardPane.setLayout(new BorderLayout(0, 0));
+		this.boardPane.setLayout(new GridLayout(100, 100, 0, 0));
+
+		for (int i = 0; i < 10000; i++) {
+			this.boardPane.add(new JPanel());
+		}
+
 		return this.boardPane;
 	}
 
 	public void showGameBoard() {
-		// All users logged
-		boolean allLoggedIn = true;
+		if (!Game.humanPlayers.isEmpty()) {
+			// All users logged
+			boolean allLoggedIn = true;
 
-		// Check if all players have successfully logged in
-		for (int i = 0; i < Game.numberOfPlayers; i++) {
+			// Check if all players have successfully logged in
+			for (int i = 0; i < Game.numberOfPlayers; i++) {
 
-			if (!Game.humanPlayers.get(i).getCredentials().isValid()) {
-				allLoggedIn = false;
-				this.invalidLoginDetails[i].setVisible(true);
-				System.out.println(Game.humanPlayers.get(i).getName() + "'s login details are invalid. Result: " + Game.humanPlayers.get(i).getCredentials().isValid());
+				if (!Game.humanPlayers.get(i).getCredentials().isValid()) {
+					allLoggedIn = false;
+				}
+
 			}
-			
-		}
-		
-		// Show game pan if all have logged in
-		if (allLoggedIn) {
-			this.contentCardLayout.show(this.contentPane, "gamePane");
+
+			// Show game pan if all have logged in
+			if (allLoggedIn) {
+				this.contentCardLayout.show(this.contentPane, "gamePane");
+			}
 		}
 	}
-	
+
+	public void setInvalidLoginDetails(int playerID, boolean valid) {
+		this.invalidLoginDetails[playerID - 1].setVisible(!valid);
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+
 		// If start button was clicked
 		if (e.getActionCommand().equals("Start")) {
 			// Number of players
@@ -351,34 +361,34 @@ public class UIController extends JFrame implements ActionListener {
 			this.passwords = new JPasswordField[Game.numberOfPlayers];
 			// Create login pane
 			this.contentPane.add(this.createLoginPane(), "loginPane");
-			
+
 			// Show login pane
 			this.contentCardLayout.show(this.contentPane, "loginPane");
-		
-		// Login button clicked
+
+			// Login button clicked
 		} else if (e.getActionCommand().equals("Login")) {
-			
+
 			// Reset all invalid details label
 			for (JLabel lbl : this.invalidLoginDetails) {
 				lbl.setVisible(false);
 			}
-			
+
 			// Array to be passed to Game class
 			Credentials[] credentials = new Credentials[Game.numberOfPlayers];
-			
+
 			// Get the usernames and passwords from the textfields
 			for (int i = 0; i < Game.numberOfPlayers; i++) {
-				
+
 				// Create new credentials
-				credentials[i] = new Credentials(this.usernames[i].getText(), new String(this.passwords[i].getPassword()));
-					
+				credentials[i] = new Credentials(i + 1, this.usernames[i].getText(), new String(this.passwords[i].getPassword()));
+
 			}
-			
+
 			// Login users
 			Game.createPlayers(credentials);
 
 		}
-		
+
 	}
-	
+
 }

@@ -1,10 +1,11 @@
+import java.util.concurrent.ConcurrentHashMap;
 
 public class GameBoard {
 	
-	private int[][] board;
+	private ConcurrentHashMap<Integer, Integer> board;
 
 	public GameBoard(int rows, int cols) {
-		this.board = new int[rows][cols];
+		this.board = new ConcurrentHashMap<Integer, Integer>();
 	}
 	
 	public int getValueAt(int x, int y) {
