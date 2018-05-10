@@ -53,7 +53,7 @@ public class UIController extends JFrame implements ActionListener {
 		this.setTitle("Multiplayer Snake");
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setBounds(100, 100, 1000, 700);
+		this.setBounds(100, 100, 810, 750);
 		this.setResizable(false);
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -314,10 +314,14 @@ public class UIController extends JFrame implements ActionListener {
 	private JPanel createBoardPane() {
 		this.boardPane = new JPanel();
 		this.boardPane.setBorder(new LineBorder(new Color(0, 0, 0)));
-		this.boardPane.setLayout(new GridLayout(100, 100, 0, 0));
+		this.boardPane.setLayout(new GridLayout(100, 100, 1, 1));
 
 		for (int i = 0; i < 10000; i++) {
-			this.boardPane.add(new JPanel());
+			JPanel square = new JPanel();
+			square.setBackground(Color.LIGHT_GRAY);
+			if (i == 0) square.setBackground(Color.blue);
+			if (i == 9999) square.setBackground(Color.blue);
+			this.boardPane.add(square);
 		}
 
 		return this.boardPane;

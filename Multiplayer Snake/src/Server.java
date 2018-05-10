@@ -17,7 +17,6 @@ public class Server implements Runnable{
 	
 	public void update() {
 		
-		
 			try {
 				HumanPlayer player = Game.buffer_HumanPlayers.poll();
 
@@ -59,6 +58,7 @@ public class Server implements Runnable{
 	public void run() {
 		while (!Game.gameOver) {
 			update();
+			System.out.println(Game.getUI().getSize().getWidth() + " by " + Game.getUI().getSize().getHeight());
 			
 		}
 		
