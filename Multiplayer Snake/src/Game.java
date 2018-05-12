@@ -4,24 +4,28 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class Game {
 	
 	public static int numberOfPlayers;
-	private static GameBoard board;
+	public static GameBoard board;
 	public static MapDB db;
 	private static UIController ui;
 	
 	private static Server server;
+	
 	public static ArrayList<HumanPlayer> humanPlayers;
 	
 	public static ArrayBlockingQueue<HumanPlayer> buffer_HumanPlayers;
+	
+	public static boolean gameStarted;
 	
 	public static boolean gameOver;
 	
 	public static void main(String[] args) {
 
 		gameOver = false;
-		
-		ui = new UIController();
+		gameStarted = false;
 		
 		board = new GameBoard(100, 100);
+		
+		ui = new UIController();
 		
 		humanPlayers = new ArrayList<HumanPlayer>();
 		

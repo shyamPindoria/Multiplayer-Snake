@@ -10,6 +10,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.Font;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
@@ -36,11 +37,8 @@ public class UIController extends JFrame implements ActionListener {
 	private JPanel scorePane;
 
 	private CardLayout contentCardLayout;
-
-	private JLabel labelPlayer1Score;
-	private JLabel labelPlayer2Score;
-	private JLabel labelPlayer3Score;
-	private JLabel labelPlayer4Score;
+	
+	private ArrayList<JLabel> scores;
 
 	private JComboBox<Integer> comboBoxNumberOfPlayers;
 
@@ -53,7 +51,7 @@ public class UIController extends JFrame implements ActionListener {
 		this.setTitle("Multiplayer Snake");
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setBounds(100, 100, 810, 750);
+		this.setBounds(100, 100, 790, 735);
 		this.setResizable(false);
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -64,8 +62,6 @@ public class UIController extends JFrame implements ActionListener {
 		this.contentPane.setLayout(this.contentCardLayout);
 
 		this.contentPane.add(this.createStartPane(), "startPane");
-
-		this.contentPane.add(this.createGamePane(), "gamePane");
 
 		this.contentCardLayout.show(this.contentPane, "startPane");
 
@@ -252,6 +248,8 @@ public class UIController extends JFrame implements ActionListener {
 
 	private JPanel createScorePane() {
 
+		this.scores = new ArrayList<JLabel>();
+		
 		this.scorePane = new JPanel();
 		this.scorePane.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 
@@ -272,56 +270,34 @@ public class UIController extends JFrame implements ActionListener {
 		gbc_labelScores.gridx = 0;
 		gbc_labelScores.gridy = 0;
 		this.scorePane.add(labelScores, gbc_labelScores);
-
-
-		this.labelPlayer1Score = new JLabel("Player 1: 0");
-		GridBagConstraints gbc_labelPlayer1Score = new GridBagConstraints();
-		gbc_labelPlayer1Score.insets = new Insets(0, 10, 0, 10);
-		gbc_labelPlayer1Score.gridx = 0;
-		gbc_labelPlayer1Score.gridy = 1;
-		this.scorePane.add(this.labelPlayer1Score, gbc_labelPlayer1Score);
-
-
-		this.labelPlayer2Score = new JLabel("Player 2: 0");
-		GridBagConstraints gbc_labelPlayer2Score = new GridBagConstraints();
-		gbc_labelPlayer2Score.insets = new Insets(10, 10, 0, 10);
-		gbc_labelPlayer2Score.gridx = 0;
-		gbc_labelPlayer2Score.gridy = 2;
-		this.scorePane.add(this.labelPlayer2Score, gbc_labelPlayer2Score);
-
-
-		this.labelPlayer3Score = new JLabel("Player 3: 0");
-		GridBagConstraints gbc_labelPlayer3Score = new GridBagConstraints();
-		gbc_labelPlayer3Score.insets = new Insets(10, 10, 0, 10);
-		gbc_labelPlayer3Score.gridx = 0;
-		gbc_labelPlayer3Score.gridy = 3;
-		this.scorePane.add(this.labelPlayer3Score, gbc_labelPlayer3Score);
-
-
-		this.labelPlayer4Score = new JLabel("Player 4: 0");
-		GridBagConstraints gbc_labelPlayer4Score = new GridBagConstraints();
-		gbc_labelPlayer4Score.anchor = GridBagConstraints.NORTH;
-		gbc_labelPlayer4Score.insets = new Insets(10, 10, 0, 10);
-		gbc_labelPlayer4Score.weighty = 1.0;
-		gbc_labelPlayer4Score.gridx = 0;
-		gbc_labelPlayer4Score.gridy = 4;
-		this.scorePane.add(this.labelPlayer4Score, gbc_labelPlayer4Score);
-
+		
+		for (int i = 0; i < Game.numberOfPlayers; i++) {
+			
+			JLabel labelPlayerScore = new JLabel(Game.humanPlayers.get(i).getName() + ": " + Game.humanPlayers.get(i).getScore());
+			GridBagConstraints gbc_labelPlayerScore = new GridBagConstraints();
+			gbc_labelPlayerScore.insets = new Insets(0, 10, 0, 10);
+			if (i == Game.numberOfPlayers - 1) {
+				gbc_labelPlayerScore.weighty = 1.0;
+				gbc_labelPlayerScore.anchor = GridBagConstraints.NORTH;
+			}
+			gbc_labelPlayerScore.gridx = 0;
+			gbc_labelPlayerScore.gridy = i + 1;
+			this.scorePane.add(labelPlayerScore, gbc_labelPlayerScore);
+			this.scores.add(labelPlayerScore);
+			
+		}
 
 		return this.scorePane;
 	}
 
 	private JPanel createBoardPane() {
+		
 		this.boardPane = new JPanel();
 		this.boardPane.setBorder(new LineBorder(new Color(0, 0, 0)));
-		this.boardPane.setLayout(new GridLayout(100, 100, 1, 1));
+		this.boardPane.setLayout(new GridLayout(Game.board.getCols(), Game.board.getRows(), 1, 1));
 
-		for (int i = 0; i < 10000; i++) {
-			JPanel square = new JPanel();
-			square.setBackground(Color.LIGHT_GRAY);
-			if (i == 0) square.setBackground(Color.blue);
-			if (i == 9999) square.setBackground(Color.blue);
-			this.boardPane.add(square);
+		for (int i = 0; i < Game.board.getRows() * Game.board.getRows(); i++) {
+			this.boardPane.add(Game.board.getCellAt(i));
 		}
 
 		return this.boardPane;
@@ -330,19 +306,19 @@ public class UIController extends JFrame implements ActionListener {
 	public void showGameBoard() {
 		if (!Game.humanPlayers.isEmpty()) {
 			// All users logged
-			boolean allLoggedIn = true;
+			Game.gameStarted = true;
 
 			// Check if all players have successfully logged in
 			for (int i = 0; i < Game.numberOfPlayers; i++) {
 
 				if (!Game.humanPlayers.get(i).getCredentials().isValid()) {
-					allLoggedIn = false;
+					Game.gameStarted = false;
 				}
-
 			}
 
 			// Show game pan if all have logged in
-			if (allLoggedIn) {
+			if (Game.gameStarted) {
+				this.contentPane.add(this.createGamePane(), "gamePane");
 				this.contentCardLayout.show(this.contentPane, "gamePane");
 			}
 		}
@@ -352,6 +328,16 @@ public class UIController extends JFrame implements ActionListener {
 		this.invalidLoginDetails[playerID - 1].setVisible(!valid);
 	}
 
+	private void updateScores() {
+		for (int i = 0; i < Game.numberOfPlayers; i++) {
+			this.scores.get(i).setText(Game.humanPlayers.get(i).getName() + ": " + Game.humanPlayers.get(i).getScore());
+		}
+	}
+	
+	public void update() {
+		this.updateScores();
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 

@@ -4,8 +4,10 @@ public class HumanPlayer extends Player {
 	private Credentials credentials;
 	
 	public HumanPlayer(int id, Credentials credentials) {
+		
 		super(id, credentials.getUsername());
 		this.credentials = credentials;
+		
 	}
 	
 	public void getInput() {

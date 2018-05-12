@@ -15,13 +15,17 @@ public class Server implements Runnable{
 		
 	}
 	
-	public void update() {
+	private void update() {
+		
+	}
+	
+	private void loginPlayers() {
 		
 			try {
 				HumanPlayer player = Game.buffer_HumanPlayers.poll();
 
 				if (player != null && !player.getCredentials().isValid()) {
-					loginPlayer(player);
+					pool.submit(player.getCredentials());
 				}
 
 			} catch (Exception e) {
@@ -42,24 +46,14 @@ public class Server implements Runnable{
 		
 	}
 
-	/**
-	 * Logs in a player by submitting the credentials to the ExecutorService
-	 * @param credentials Player credentials to check
-	 */
-	public void loginPlayer(HumanPlayer player) {
-		
-		// Submit the player to the executor service
-		pool.submit(player.getCredentials());
-		
-	}
-
 	
 	@Override
 	public void run() {
 		while (!Game.gameOver) {
-			update();
-			System.out.println(Game.getUI().getSize().getWidth() + " by " + Game.getUI().getSize().getHeight());
-			
+			if (!Game.gameStarted) {
+				this.loginPlayers();
+			}
+			this.update();
 		}
 		
 	}
