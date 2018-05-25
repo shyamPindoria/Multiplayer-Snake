@@ -35,9 +35,7 @@ public class GameBoard {
 	}
 	
 	public void setValueAt(int x, int y, int value) {
-		
 		this.board.get((y * rows) + x).setValue(value);
-		
 	}
 	
 	public JPanel getCellAt(int index) {

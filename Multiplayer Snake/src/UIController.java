@@ -10,6 +10,8 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.awt.Font;
 import javax.swing.border.BevelBorder;
@@ -21,7 +23,7 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import java.awt.GridLayout;
 
-public class UIController extends JFrame implements ActionListener {
+public class UIController extends JFrame implements ActionListener, KeyListener {
 
 	/**
 	 *  Default Serial Version
@@ -37,7 +39,7 @@ public class UIController extends JFrame implements ActionListener {
 	private JPanel scorePane;
 
 	private CardLayout contentCardLayout;
-	
+
 	private ArrayList<JLabel> scores;
 
 	private JComboBox<Integer> comboBoxNumberOfPlayers;
@@ -56,6 +58,11 @@ public class UIController extends JFrame implements ActionListener {
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.setContentPane(this.contentPane);
+
+		// for maximising screen
+		//this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		//this.setUndecorated(true);
+		addKeyListener(this);
 
 		this.contentCardLayout = new CardLayout(0, 0);
 
@@ -249,7 +256,7 @@ public class UIController extends JFrame implements ActionListener {
 	private JPanel createScorePane() {
 
 		this.scores = new ArrayList<JLabel>();
-		
+
 		this.scorePane = new JPanel();
 		this.scorePane.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 
@@ -270,9 +277,9 @@ public class UIController extends JFrame implements ActionListener {
 		gbc_labelScores.gridx = 0;
 		gbc_labelScores.gridy = 0;
 		this.scorePane.add(labelScores, gbc_labelScores);
-		
+
 		for (int i = 0; i < Game.numberOfPlayers; i++) {
-			
+
 			JLabel labelPlayerScore = new JLabel(Game.humanPlayers.get(i).getName() + ": " + Game.humanPlayers.get(i).getScore());
 			GridBagConstraints gbc_labelPlayerScore = new GridBagConstraints();
 			gbc_labelPlayerScore.insets = new Insets(0, 10, 0, 10);
@@ -284,14 +291,14 @@ public class UIController extends JFrame implements ActionListener {
 			gbc_labelPlayerScore.gridy = i + 1;
 			this.scorePane.add(labelPlayerScore, gbc_labelPlayerScore);
 			this.scores.add(labelPlayerScore);
-			
+
 		}
 
 		return this.scorePane;
 	}
 
 	private JPanel createBoardPane() {
-		
+
 		this.boardPane = new JPanel();
 		this.boardPane.setBorder(new LineBorder(new Color(0, 0, 0)));
 		this.boardPane.setLayout(new GridLayout(Game.board.getCols(), Game.board.getRows(), 1, 1));
@@ -320,6 +327,11 @@ public class UIController extends JFrame implements ActionListener {
 			if (Game.gameStarted) {
 				this.contentPane.add(this.createGamePane(), "gamePane");
 				this.contentCardLayout.show(this.contentPane, "gamePane");
+
+				// Add KeyListener to game panel and make it the focus of the window for key events
+				gamePane.addKeyListener(this);
+				gamePane.requestFocusInWindow();
+				Game.initGame();
 			}
 		}
 	}
@@ -333,11 +345,11 @@ public class UIController extends JFrame implements ActionListener {
 			this.scores.get(i).setText(Game.humanPlayers.get(i).getName() + ": " + Game.humanPlayers.get(i).getScore());
 		}
 	}
-	
+
 	public void update() {
 		this.updateScores();
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
@@ -379,6 +391,60 @@ public class UIController extends JFrame implements ActionListener {
 
 		}
 
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		int key = e.getKeyCode();
+		System.out.println("key pressed: " + key);
+
+		switch(key) {
+		// Player 1 (up,down,left,right)
+		case 38:
+			break;
+		case 40:
+			break;
+		case 37:
+			break;
+		case 439:
+			break;
+			// Player 2 (w,a,s,d)
+		case 87:
+			break;
+		case 65:
+			break;
+		case 83:
+			break;
+		case 68:
+			break;
+			// Player 3 (t,f,g,h)
+		case 84:
+			break;
+		case 70:
+			break;
+		case 71:
+			break;
+		case 72:
+			break;
+			// Player 4 (i,j,k,l)
+		case 73:
+			break;
+		case 74:
+			break;
+		case 75:
+			break;
+		case 76:
+			break;
+		}
+
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
 	}
 
 }

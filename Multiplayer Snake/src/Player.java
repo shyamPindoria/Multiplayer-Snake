@@ -11,7 +11,7 @@ public abstract class Player implements Runnable{
 		this.playerID = id;
 		this.name = name;
 		this.score = 0;
-		this.snake = new Snake();
+		this.setSnake(new Snake());
 	}
 	
 	public abstract void makeMove();
@@ -45,6 +45,14 @@ public abstract class Player implements Runnable{
 	@Override
 	public String toString() {
 		return this.name + ": " + this.score;
+	}
+
+	public Snake getSnake() {
+		return snake;
+	}
+
+	public void setSnake(Snake snake) {
+		this.snake = snake;
 	}
 	
 }

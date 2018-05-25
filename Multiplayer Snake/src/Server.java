@@ -20,7 +20,6 @@ public class Server implements Runnable{
 	}
 	
 	private void loginPlayers() {
-		
 			try {
 				HumanPlayer player = Game.buffer_HumanPlayers.poll();
 
@@ -29,12 +28,10 @@ public class Server implements Runnable{
 				}
 
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
 			Game.getUI().showGameBoard();
-
 	}
 	
 	/**
@@ -53,7 +50,7 @@ public class Server implements Runnable{
 			if (!Game.gameStarted) {
 				this.loginPlayers();
 			}
-			this.update();
+			this.update();  // doesn't do anything yet
 		}
 		
 	}
