@@ -4,6 +4,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import javax.swing.Timer;
@@ -14,7 +17,7 @@ public class Server implements Runnable, ActionListener {
 	
 	private Thread serverThread;
 	
-	public Queue<Snake.Direction> moveQueue; // stores all moves to be processed
+	//public Queue<Snake.Direction> moveQueue; // stores all moves to be processed
 	
 	public static Timer timer;
 	
@@ -23,7 +26,7 @@ public class Server implements Runnable, ActionListener {
 		this.pool = Executors.newFixedThreadPool(4);
 		this.serverThread = new Thread(this);
 		this.serverThread.start();
-		moveQueue = new LinkedList<Snake.Direction>();
+		//moveQueue = new LinkedList<Snake.Direction>();
 		timer = new Timer(1000, this);
 	}
 	
@@ -32,13 +35,13 @@ public class Server implements Runnable, ActionListener {
 
 	}
 	
-	public Queue<Snake.Direction> getMoveQueue() {
-		return moveQueue;
-	}
-
-	public void setMoveQueue(Queue<Snake.Direction> moveQueue) {
-		this.moveQueue = moveQueue;
-	}
+//	public Queue<Snake.Direction> getMoveQueue() {
+//		return moveQueue;
+//	}
+//
+//	public void setMoveQueue(Queue<Snake.Direction> moveQueue) {
+//		this.moveQueue = moveQueue;
+//	}
 
 	private void loginPlayers() {
 			try {
@@ -82,13 +85,21 @@ public class Server implements Runnable, ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		// server gets all the moves from all the players and process them
 		
-//		for(HumanPlayer player : Game.humanPlayers) {
-//				Snake snake = player.getSnake();
-//				Stack<Snake.Direction> moves = player.getMoves();
-//				for(Snake.Direction nextMove : moves) {
-//					
-//				}
-//		}
+		Iterator<HumanPlayer> playerIterator = Game.humanPlayers.iterator();
+		while (playerIterator.hasNext()) {
+			HumanPlayer player = playerIterator.next();
+			Snake playerSnake = player.getSnake();
+			ConcurrentLinkedQueue<Snake.Direction> moves = player.getMoves();
+			
+			Iterator<Snake.Direction> snakeDirectionIterator = moves.iterator();
+			while(snakeDirectionIterator.hasNext()) {
+				Snake.Direction direction = snakeDirectionIterator.next();
+				player.addMove(direction);
+			}
+
+		}
+		
+
 		
 	}
 

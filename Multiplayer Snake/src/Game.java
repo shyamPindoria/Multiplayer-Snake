@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import javax.swing.JPanel;
@@ -75,7 +76,9 @@ public class Game {
 	}
 	
 	public static HumanPlayer getHumanPlayer(int id) {
-		for (HumanPlayer player : humanPlayers) {
+		Iterator<HumanPlayer> playerIterator = Game.humanPlayers.iterator();
+		while (playerIterator.hasNext()) {
+			HumanPlayer player = playerIterator.next();
 			if (player.getPlayerID() == id) {
 				return player;
 			}
@@ -88,20 +91,24 @@ public class Game {
 		for (int i = 0; i < humanPlayers.size(); i++) {
 			// create a new snake and give it a random colour. Then, assign it to a player
 			Snake playerSnake = humanPlayers.get(i).getSnake(); 
-			Color snakeColor = playerSnake.generateRandomColor();
 			if (i == 0) {
 				playerSnake.addBodyPart(board.getCellAt(90, 10));
+				playerSnake.addBodyPart(board.getCellAt(89,10));
+				playerSnake.addBodyPart(board.getCellAt(88,10));
 			} else if (i == 1) {
-				playerSnake.addBodyPart(board.getCellAt(10, 10));
+				playerSnake.addBodyPart(board.getCellAt(10, 11));
+				playerSnake.addBodyPart(board.getCellAt(10, 12));
+				playerSnake.addBodyPart(board.getCellAt(10, 13));
 			} else if (i == 2) {
 				playerSnake.addBodyPart(board.getCellAt(10, 90));
+				playerSnake.addBodyPart(board.getCellAt(11, 90));
+				playerSnake.addBodyPart(board.getCellAt(12, 90));
 			} else if (i == 3) {
-				playerSnake.addBodyPart(board.getCellAt(90, 90));
+				playerSnake.addBodyPart(board.getCellAt(90, 91));
+				playerSnake.addBodyPart(board.getCellAt(90, 92));
+				playerSnake.addBodyPart(board.getCellAt(90, 93));
 			}
-			
-			for (JPanel bodyPart : playerSnake.getSnakeBody()) {  // dont need to loop through arraylist here because it only contains 1 value at this point
-				bodyPart.setBackground(snakeColor);
-			}
+			playerSnake.setColor();
 		}
 		
 	}
