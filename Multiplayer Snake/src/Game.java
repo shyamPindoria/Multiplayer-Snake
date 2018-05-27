@@ -37,6 +37,8 @@ public class Game {
 		
 		server = new Server();
 		
+		
+		
 	}
 	
 	/**

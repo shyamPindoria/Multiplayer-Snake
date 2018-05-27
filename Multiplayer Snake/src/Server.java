@@ -1,26 +1,37 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import javax.swing.Timer;
 
-public class Server implements Runnable{
+public class Server implements Runnable, ActionListener {
 
 	private ExecutorService pool;
 	
 	private Thread serverThread;
 	
 	public Queue<Snake.Direction> moveQueue; // stores all moves to be processed
-
+	
+	public static Timer timer;
+	
 	public Server() {
 		
 		this.pool = Executors.newFixedThreadPool(4);
 		this.serverThread = new Thread(this);
 		this.serverThread.start();
 		moveQueue = new LinkedList<Snake.Direction>();
+		timer = new Timer(1000, this);
 	}
 	
+	
+	
 	public void update() {
-		
+
+
 	}
 	
 	public Queue<Snake.Direction> getMoveQueue() {
@@ -62,8 +73,24 @@ public class Server implements Runnable{
 			if (!Game.gameStarted) {
 				this.loginPlayers();
 			}
-			//this.update();  
+			this.update();  
 		}
+		
+	}
+
+
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		// server gets all the moves from all the players and process them
+		
+//		for(HumanPlayer player : Game.humanPlayers) {
+//				Snake snake = player.getSnake();
+//				Stack<Snake.Direction> moves = player.getMoves();
+//				for(Snake.Direction nextMove : moves) {
+//					
+//				}
+//		}
 		
 	}
 

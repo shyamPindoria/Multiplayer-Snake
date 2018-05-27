@@ -21,6 +21,8 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JTextField;
+import javax.swing.Timer;
+
 import java.awt.GridLayout;
 
 public class UIController extends JFrame implements ActionListener, KeyListener {
@@ -48,8 +50,9 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 	private JTextField[] usernames;
 	private JPasswordField[] passwords;
 
-	public UIController() {
 
+	public UIController() {
+		
 		this.setTitle("Multiplayer Snake");
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -71,7 +74,6 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 		this.contentPane.add(this.createStartPane(), "startPane");
 
 		this.contentCardLayout.show(this.contentPane, "startPane");
-
 
 		this.setVisible(true);
 
@@ -249,7 +251,7 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 		this.gamePane.add(createScorePane(), BorderLayout.WEST);
 
 		this.gamePane.add(createBoardPane(), BorderLayout.CENTER);
-
+		
 		return this.gamePane;
 	}
 
@@ -293,6 +295,11 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 			this.scores.add(labelPlayerScore);
 
 		}
+		
+		JButton btnStartGame = new JButton("Start Game");
+		btnStartGame.setActionCommand("Start Game");
+		btnStartGame.addActionListener(this);
+		scorePane.add(btnStartGame);
 
 		return this.scorePane;
 	}
@@ -352,7 +359,7 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
+		
 		// If start button was clicked
 		if (e.getActionCommand().equals("Start")) {
 			// Number of players
@@ -389,6 +396,8 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 			// Login users
 			Game.createPlayers(credentials);
 
+		} else if (e.getActionCommand().equals("Start Game")) {
+			Server.timer.start();
 		}
 
 	}
@@ -405,13 +414,17 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 		case KeyEvent.VK_LEFT:
 		case KeyEvent.VK_RIGHT:
 			if (key == KeyEvent.VK_UP) {
-				Game.server.getMoveQueue().add(Snake.Direction.UP);
+				Game.getHumanPlayer(0).getMoves().add(Snake.Direction.UP);
+				//Game.server.getMoveQueue().add(Snake.Direction.UP);
 			} else if (key == KeyEvent.VK_DOWN) {
-				Game.server.getMoveQueue().add(Snake.Direction.DOWN);
+				Game.getHumanPlayer(0).getMoves().add(Snake.Direction.DOWN);
+				//Game.server.getMoveQueue().add(Snake.Direction.DOWN);
 			} else if (key == KeyEvent.VK_LEFT) {
-				Game.server.getMoveQueue().add(Snake.Direction.LEFT);
+				Game.getHumanPlayer(0).getMoves().add(Snake.Direction.LEFT);
+				//Game.server.getMoveQueue().add(Snake.Direction.LEFT);
 			} else {
-				Game.server.getMoveQueue().add(Snake.Direction.RIGHT);
+				Game.getHumanPlayer(0).getMoves().add(Snake.Direction.RIGHT);
+				//Game.server.getMoveQueue().add(Snake.Direction.RIGHT);
 			}
 			//Game.server.update(Game.getHumanPlayer(0)); // 0 is player 1's id
 			break;
@@ -421,13 +434,13 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 		case KeyEvent.VK_A:
 		case KeyEvent.VK_D:
 			if (key == KeyEvent.VK_W) {
-				Game.server.getMoveQueue().add(Snake.Direction.UP);
+				//Game.server.getMoveQueue().add(Snake.Direction.UP);
 			} else if (key == KeyEvent.VK_S) {
-				Game.server.getMoveQueue().add(Snake.Direction.DOWN);
+				//Game.server.getMoveQueue().add(Snake.Direction.DOWN);
 			} else if (key == KeyEvent.VK_A) {
-				Game.server.getMoveQueue().add(Snake.Direction.LEFT);
+				//Game.server.getMoveQueue().add(Snake.Direction.LEFT);
 			} else {
-				Game.server.getMoveQueue().add(Snake.Direction.RIGHT);
+				//Game.server.getMoveQueue().add(Snake.Direction.RIGHT);
 			}
 			//Game.server.update(Game.getHumanPlayer(1)); // 1 is player 2's id
 			break;
@@ -437,13 +450,13 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 		case KeyEvent.VK_F:
 		case KeyEvent.VK_H:
 			if (key == KeyEvent.VK_T) {
-				Game.server.getMoveQueue().add(Snake.Direction.UP);
+				//Game.server.getMoveQueue().add(Snake.Direction.UP);
 			} else if (key == KeyEvent.VK_G) {
-				Game.server.getMoveQueue().add(Snake.Direction.DOWN);
+				//Game.server.getMoveQueue().add(Snake.Direction.DOWN);
 			} else if (key == KeyEvent.VK_F) {
-				Game.server.getMoveQueue().add(Snake.Direction.LEFT);
+				//Game.server.getMoveQueue().add(Snake.Direction.LEFT);
 			} else {
-				Game.server.getMoveQueue().add(Snake.Direction.RIGHT);
+				//Game.server.getMoveQueue().add(Snake.Direction.RIGHT);
 			}
 			//Game.server.update(Game.getHumanPlayer(2)); // 2 is player 3's id
 			break;
@@ -453,13 +466,13 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 		case KeyEvent.VK_J:
 		case KeyEvent.VK_L:
 			if (key == KeyEvent.VK_I) {
-				Game.server.getMoveQueue().add(Snake.Direction.UP);
+				//Game.server.getMoveQueue().add(Snake.Direction.UP);
 			} else if (key == KeyEvent.VK_K) {
-				Game.server.getMoveQueue().add(Snake.Direction.DOWN);
+				//Game.server.getMoveQueue().add(Snake.Direction.DOWN);
 			} else if (key == KeyEvent.VK_J) {
-				Game.server.getMoveQueue().add(Snake.Direction.LEFT);
+				//Game.server.getMoveQueue().add(Snake.Direction.LEFT);
 			} else {
-				Game.server.getMoveQueue().add(Snake.Direction.RIGHT);
+				//Game.server.getMoveQueue().add(Snake.Direction.RIGHT);
 			}
 			//Game.server.update(Game.getHumanPlayer(3)); // 3 is player 4's id
 			break;

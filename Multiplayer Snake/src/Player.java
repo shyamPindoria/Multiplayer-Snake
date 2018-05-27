@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Stack;
 
 public abstract class Player implements Runnable{
 
@@ -6,7 +7,7 @@ public abstract class Player implements Runnable{
 	private String name;
 	private int score;
 	private Snake snake;
-	//private ArrayList<Snake.Direction> moves;
+	private Stack<Snake.Direction> moves;
 	
 	
 	public Player(int id, String name) {
@@ -14,6 +15,7 @@ public abstract class Player implements Runnable{
 		this.name = name;
 		this.score = 0;
 		this.setSnake(new Snake());
+		moves = new Stack<Snake.Direction>();
 	}
 	
 	public abstract void makeMove();
@@ -55,6 +57,14 @@ public abstract class Player implements Runnable{
 
 	public void setSnake(Snake snake) {
 		this.snake = snake;
+	}
+
+	public Stack<Snake.Direction> getMoves() {
+		return moves;
+	}
+
+	public void setMoves(Stack<Snake.Direction> moves) {
+		this.moves = moves;
 	}
 
 
