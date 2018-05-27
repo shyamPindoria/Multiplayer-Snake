@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -6,19 +8,29 @@ public class Server implements Runnable{
 	private ExecutorService pool;
 	
 	private Thread serverThread;
+	
+	public Queue<Snake.Direction> moveQueue; // stores all moves to be processed
 
 	public Server() {
 		
 		this.pool = Executors.newFixedThreadPool(4);
 		this.serverThread = new Thread(this);
 		this.serverThread.start();
+		moveQueue = new LinkedList<Snake.Direction>();
+	}
+	
+	public void update() {
 		
 	}
 	
-	private void update() {
-		
+	public Queue<Snake.Direction> getMoveQueue() {
+		return moveQueue;
 	}
-	
+
+	public void setMoveQueue(Queue<Snake.Direction> moveQueue) {
+		this.moveQueue = moveQueue;
+	}
+
 	private void loginPlayers() {
 			try {
 				HumanPlayer player = Game.buffer_HumanPlayers.poll();
@@ -50,7 +62,7 @@ public class Server implements Runnable{
 			if (!Game.gameStarted) {
 				this.loginPlayers();
 			}
-			this.update();  // doesn't do anything yet
+			//this.update();  
 		}
 		
 	}

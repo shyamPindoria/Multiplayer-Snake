@@ -1,6 +1,9 @@
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
+
+import javax.swing.JPanel;
+
 import java.util.Random;
 
 public class Game {
@@ -10,7 +13,7 @@ public class Game {
 	public static MapDB db;
 	private static UIController ui;
 	
-	private static Server server;
+	public static Server server;
 	
 	public static ArrayList<HumanPlayer> humanPlayers;
 	
@@ -47,7 +50,7 @@ public class Game {
 		for (int i = 0; i < Game.numberOfPlayers; i++) {
 			
 			HumanPlayer player = new HumanPlayer(i, credentials[i]);
-			
+			// *** CAN'T SYSOUT HERE FOR SOME REASON. GET AN OUTOFBOUNDSEXCEPTION **************** 
 			int playerAlreadyAdded = humanPlayers.indexOf(player);
 			
 			if (playerAlreadyAdded == -1) {
@@ -69,23 +72,39 @@ public class Game {
 		return ui;
 	}
 	
-	public static void initGame() {
-		for (HumanPlayer humanPlayer : humanPlayers) {
-			Snake playerSnake = new Snake();
-			playerSnake.setColour(randomColor());
-			humanPlayer.setSnake(playerSnake);
+	public static HumanPlayer getHumanPlayer(int id) {
+		for (HumanPlayer player : humanPlayers) {
+			if (player.getPlayerID() == id) {
+				return player;
+			}
 		}
-
+		return null; // if there are no human players
+	}
+	
+	public static void initGame() {
+		// loop through human players
+		for (int i = 0; i < humanPlayers.size(); i++) {
+			// create a new snake and give it a random colour. Then, assign it to a player
+			Snake playerSnake = humanPlayers.get(i).getSnake(); 
+			Color snakeColor = playerSnake.generateRandomColor();
+			if (i == 0) {
+				playerSnake.addBodyPart(board.getCellAt(90, 10));
+			} else if (i == 1) {
+				playerSnake.addBodyPart(board.getCellAt(10, 10));
+			} else if (i == 2) {
+				playerSnake.addBodyPart(board.getCellAt(10, 90));
+			} else if (i == 3) {
+				playerSnake.addBodyPart(board.getCellAt(90, 90));
+			}
+			
+			for (JPanel bodyPart : playerSnake.getSnakeBody()) {  // dont need to loop through arraylist here because it only contains 1 value at this point
+				bodyPart.setBackground(snakeColor);
+			}
+		}
 		
 	}
 	
-    private static Color randomColor() {
-        Random random = new Random();
-        int r = random.nextInt(255);
-        int g = random.nextInt(255);
-        int b = random.nextInt(255);
-        return new Color(r,g,b);
-    }
+
 	
 	
 }

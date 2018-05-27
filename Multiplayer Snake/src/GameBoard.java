@@ -4,14 +4,14 @@ import javax.swing.JPanel;
 
 public class GameBoard {
 	
-	private ConcurrentHashMap<Integer, Cell> board;
-	
+	private ConcurrentHashMap<Integer, Cell> cells;
+
 	private int rows;
 	private int cols;
 
 	public GameBoard(int rows, int cols) {
 		
-		this.board = new ConcurrentHashMap<Integer, Cell>();
+		this.cells = new ConcurrentHashMap<Integer, Cell>();
 		
 		this.rows = rows;
 		this.cols = cols;
@@ -29,25 +29,31 @@ public class GameBoard {
 	}
 	
 	public int getValueAt(int x, int y) {
-		
-		return this.board.get((y * rows) + x).getValue();
-		
+		return this.cells.get((y * rows) + x).getValue();
 	}
 	
 	public void setValueAt(int x, int y, int value) {
-		this.board.get((y * rows) + x).setValue(value);
+		this.cells.get((y * rows) + x).setValue(value);
 	}
 	
 	public JPanel getCellAt(int index) {
-		return this.board.get(index).getPanel();
+		return this.cells.get(index).getPanel();
+	}
+	
+	public JPanel getCellAt(int x, int y) {
+		return this.cells.get((y * rows) + x).getPanel();
+	}
+	
+	public ConcurrentHashMap<Integer, Cell> getCells() {
+		return cells;
 	}
 	
 	private void initializeGameBoard(int size) {
 		
-		this.board.clear();
+		this.cells.clear();
 		
 		for (int i = 0; i < size; i++) {
-			this.board.put(i, new Cell());
+			this.cells.put(i, new Cell());
 		}
 		
 	}

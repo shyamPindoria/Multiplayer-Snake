@@ -400,40 +400,68 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 
 		switch(key) {
 		// Player 1 (up,down,left,right)
-		case 38:
+		case KeyEvent.VK_UP:
+		case KeyEvent.VK_DOWN:
+		case KeyEvent.VK_LEFT:
+		case KeyEvent.VK_RIGHT:
+			if (key == KeyEvent.VK_UP) {
+				Game.server.getMoveQueue().add(Snake.Direction.UP);
+			} else if (key == KeyEvent.VK_DOWN) {
+				Game.server.getMoveQueue().add(Snake.Direction.DOWN);
+			} else if (key == KeyEvent.VK_LEFT) {
+				Game.server.getMoveQueue().add(Snake.Direction.LEFT);
+			} else {
+				Game.server.getMoveQueue().add(Snake.Direction.RIGHT);
+			}
+			//Game.server.update(Game.getHumanPlayer(0)); // 0 is player 1's id
 			break;
-		case 40:
+			// Player 2 (w,s,a,d)
+		case KeyEvent.VK_W:
+		case KeyEvent.VK_S:
+		case KeyEvent.VK_A:
+		case KeyEvent.VK_D:
+			if (key == KeyEvent.VK_W) {
+				Game.server.getMoveQueue().add(Snake.Direction.UP);
+			} else if (key == KeyEvent.VK_S) {
+				Game.server.getMoveQueue().add(Snake.Direction.DOWN);
+			} else if (key == KeyEvent.VK_A) {
+				Game.server.getMoveQueue().add(Snake.Direction.LEFT);
+			} else {
+				Game.server.getMoveQueue().add(Snake.Direction.RIGHT);
+			}
+			//Game.server.update(Game.getHumanPlayer(1)); // 1 is player 2's id
 			break;
-		case 37:
+			// Player 3 (t,g,f,h)
+		case KeyEvent.VK_T:
+		case KeyEvent.VK_G:
+		case KeyEvent.VK_F:
+		case KeyEvent.VK_H:
+			if (key == KeyEvent.VK_T) {
+				Game.server.getMoveQueue().add(Snake.Direction.UP);
+			} else if (key == KeyEvent.VK_G) {
+				Game.server.getMoveQueue().add(Snake.Direction.DOWN);
+			} else if (key == KeyEvent.VK_F) {
+				Game.server.getMoveQueue().add(Snake.Direction.LEFT);
+			} else {
+				Game.server.getMoveQueue().add(Snake.Direction.RIGHT);
+			}
+			//Game.server.update(Game.getHumanPlayer(2)); // 2 is player 3's id
 			break;
-		case 439:
-			break;
-			// Player 2 (w,a,s,d)
-		case 87:
-			break;
-		case 65:
-			break;
-		case 83:
-			break;
-		case 68:
-			break;
-			// Player 3 (t,f,g,h)
-		case 84:
-			break;
-		case 70:
-			break;
-		case 71:
-			break;
-		case 72:
-			break;
-			// Player 4 (i,j,k,l)
-		case 73:
-			break;
-		case 74:
-			break;
-		case 75:
-			break;
-		case 76:
+			// Player 4 (i,k,j,l)
+		case KeyEvent.VK_I:
+		case KeyEvent.VK_K:
+		case KeyEvent.VK_J:
+		case KeyEvent.VK_L:
+			if (key == KeyEvent.VK_I) {
+				Game.server.getMoveQueue().add(Snake.Direction.UP);
+			} else if (key == KeyEvent.VK_K) {
+				Game.server.getMoveQueue().add(Snake.Direction.DOWN);
+			} else if (key == KeyEvent.VK_J) {
+				Game.server.getMoveQueue().add(Snake.Direction.LEFT);
+			} else {
+				Game.server.getMoveQueue().add(Snake.Direction.RIGHT);
+			}
+			//Game.server.update(Game.getHumanPlayer(3)); // 3 is player 4's id
 			break;
 		}
 

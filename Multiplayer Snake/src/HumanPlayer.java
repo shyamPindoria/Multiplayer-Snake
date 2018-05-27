@@ -7,7 +7,6 @@ public class HumanPlayer extends Player {
 		
 		super(id, credentials.getUsername());
 		this.credentials = credentials;
-		
 	}
 	
 	public void getInput() {

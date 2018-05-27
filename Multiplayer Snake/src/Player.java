@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 public abstract class Player implements Runnable{
 
@@ -5,6 +6,7 @@ public abstract class Player implements Runnable{
 	private String name;
 	private int score;
 	private Snake snake;
+	//private ArrayList<Snake.Direction> moves;
 	
 	
 	public Player(int id, String name) {
@@ -54,5 +56,7 @@ public abstract class Player implements Runnable{
 	public void setSnake(Snake snake) {
 		this.snake = snake;
 	}
+
+
 	
 }
