@@ -18,7 +18,10 @@ public abstract class Player implements Runnable{
 		moves = new Stack<Snake.Direction>();
 	}
 	
-	public abstract void makeMove();
+	public void makeMove(Snake.Direction direction) {
+		this.moves.add(direction);
+		System.out.println(name + ": " +  direction);
+	}
 	
 	public String getName() {
 		return this.name;

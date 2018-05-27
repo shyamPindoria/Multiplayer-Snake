@@ -405,78 +405,38 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
-		System.out.println("key pressed: " + key);
-
-		switch(key) {
-		// Player 1 (up,down,left,right)
-		case KeyEvent.VK_UP:
-		case KeyEvent.VK_DOWN:
-		case KeyEvent.VK_LEFT:
-		case KeyEvent.VK_RIGHT:
-			if (key == KeyEvent.VK_UP) {
-				Game.getHumanPlayer(0).getMoves().add(Snake.Direction.UP);
-				//Game.server.getMoveQueue().add(Snake.Direction.UP);
-			} else if (key == KeyEvent.VK_DOWN) {
-				Game.getHumanPlayer(0).getMoves().add(Snake.Direction.DOWN);
-				//Game.server.getMoveQueue().add(Snake.Direction.DOWN);
-			} else if (key == KeyEvent.VK_LEFT) {
-				Game.getHumanPlayer(0).getMoves().add(Snake.Direction.LEFT);
-				//Game.server.getMoveQueue().add(Snake.Direction.LEFT);
-			} else {
-				Game.getHumanPlayer(0).getMoves().add(Snake.Direction.RIGHT);
-				//Game.server.getMoveQueue().add(Snake.Direction.RIGHT);
-			}
-			//Game.server.update(Game.getHumanPlayer(0)); // 0 is player 1's id
-			break;
-			// Player 2 (w,s,a,d)
-		case KeyEvent.VK_W:
-		case KeyEvent.VK_S:
-		case KeyEvent.VK_A:
-		case KeyEvent.VK_D:
-			if (key == KeyEvent.VK_W) {
-				//Game.server.getMoveQueue().add(Snake.Direction.UP);
-			} else if (key == KeyEvent.VK_S) {
-				//Game.server.getMoveQueue().add(Snake.Direction.DOWN);
-			} else if (key == KeyEvent.VK_A) {
-				//Game.server.getMoveQueue().add(Snake.Direction.LEFT);
-			} else {
-				//Game.server.getMoveQueue().add(Snake.Direction.RIGHT);
-			}
-			//Game.server.update(Game.getHumanPlayer(1)); // 1 is player 2's id
-			break;
-			// Player 3 (t,g,f,h)
-		case KeyEvent.VK_T:
-		case KeyEvent.VK_G:
-		case KeyEvent.VK_F:
-		case KeyEvent.VK_H:
-			if (key == KeyEvent.VK_T) {
-				//Game.server.getMoveQueue().add(Snake.Direction.UP);
-			} else if (key == KeyEvent.VK_G) {
-				//Game.server.getMoveQueue().add(Snake.Direction.DOWN);
-			} else if (key == KeyEvent.VK_F) {
-				//Game.server.getMoveQueue().add(Snake.Direction.LEFT);
-			} else {
-				//Game.server.getMoveQueue().add(Snake.Direction.RIGHT);
-			}
-			//Game.server.update(Game.getHumanPlayer(2)); // 2 is player 3's id
-			break;
-			// Player 4 (i,k,j,l)
-		case KeyEvent.VK_I:
-		case KeyEvent.VK_K:
-		case KeyEvent.VK_J:
-		case KeyEvent.VK_L:
-			if (key == KeyEvent.VK_I) {
-				//Game.server.getMoveQueue().add(Snake.Direction.UP);
-			} else if (key == KeyEvent.VK_K) {
-				//Game.server.getMoveQueue().add(Snake.Direction.DOWN);
-			} else if (key == KeyEvent.VK_J) {
-				//Game.server.getMoveQueue().add(Snake.Direction.LEFT);
-			} else {
-				//Game.server.getMoveQueue().add(Snake.Direction.RIGHT);
-			}
-			//Game.server.update(Game.getHumanPlayer(3)); // 3 is player 4's id
-			break;
+		
+		
+		if (Game.numberOfPlayers > 0) {
+			if (key == KeyEvent.VK_UP) Game.getHumanPlayer(0).makeMove(Snake.Direction.UP);
+			else if (key == KeyEvent.VK_DOWN) Game.getHumanPlayer(0).makeMove(Snake.Direction.DOWN);
+			else if (key == KeyEvent.VK_LEFT) Game.getHumanPlayer(0).makeMove(Snake.Direction.LEFT);
+			else if (key == KeyEvent.VK_RIGHT) Game.getHumanPlayer(0).makeMove(Snake.Direction.RIGHT);
 		}
+		
+		if (Game.numberOfPlayers > 1) {
+			if (key == KeyEvent.VK_W) Game.getHumanPlayer(1).makeMove(Snake.Direction.UP);
+			else if (key == KeyEvent.VK_S) Game.getHumanPlayer(1).makeMove(Snake.Direction.DOWN);
+			else if (key == KeyEvent.VK_A) Game.getHumanPlayer(1).makeMove(Snake.Direction.LEFT);
+			else if (key == KeyEvent.VK_D) Game.getHumanPlayer(1).makeMove(Snake.Direction.RIGHT);
+		}
+		
+		if (Game.numberOfPlayers > 2) {
+			if (key == KeyEvent.VK_T) Game.getHumanPlayer(2).makeMove(Snake.Direction.UP);
+			else if (key == KeyEvent.VK_G) Game.getHumanPlayer(2).makeMove(Snake.Direction.DOWN);
+			else if (key == KeyEvent.VK_F) Game.getHumanPlayer(2).makeMove(Snake.Direction.LEFT);
+			else if (key == KeyEvent.VK_H) Game.getHumanPlayer(2).makeMove(Snake.Direction.RIGHT);
+		}
+		
+		if (Game.numberOfPlayers > 3) {
+			if (key == KeyEvent.VK_I) Game.getHumanPlayer(3).makeMove(Snake.Direction.UP);
+			else if (key == KeyEvent.VK_K) Game.getHumanPlayer(3).makeMove(Snake.Direction.DOWN);
+			else if (key == KeyEvent.VK_J) Game.getHumanPlayer(3).makeMove(Snake.Direction.LEFT);
+			else if (key == KeyEvent.VK_L) Game.getHumanPlayer(3).makeMove(Snake.Direction.RIGHT);
+		}
+		
+
+		
 
 	}
 

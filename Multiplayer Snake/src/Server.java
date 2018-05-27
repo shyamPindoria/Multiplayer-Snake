@@ -27,8 +27,6 @@ public class Server implements Runnable, ActionListener {
 		timer = new Timer(1000, this);
 	}
 	
-	
-	
 	public void update() {
 
 

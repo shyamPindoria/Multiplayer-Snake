@@ -4,15 +4,7 @@ public class SimulatedPlayer extends Player {
 	public SimulatedPlayer(int id, String name) {
 		super(id, name);
 	}
-	
-
-	@Override
-	public void makeMove() {
 		
-	}
-
-
-	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub

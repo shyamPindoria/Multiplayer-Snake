@@ -12,12 +12,6 @@ public class HumanPlayer extends Player {
 	public void getInput() {
 		
 	}
-
-	@Override
-	public void makeMove() {
-		
-	}
-
 	
 	@Override
 	public void run() {
