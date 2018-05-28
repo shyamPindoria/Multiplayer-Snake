@@ -31,7 +31,6 @@ public class Snake {
 	}
 	
 	public void addBodyPart(int x, int y, int playerID, boolean isSnakeHead) {
-		Game.board.getCell(x, y).getPanel().setBackground(Color.BLACK);
 		Game.board.getCell(x, y).setValue(playerID);
 		if (isSnakeHead) {
 			Game.board.getCell(x, y).setSnakeHead(true);
@@ -39,8 +38,7 @@ public class Snake {
 	}
 	
 	public void removeBodyPart(Cell bodyPart) {
-		bodyPart.getPanel().setBackground(Color.LIGHT_GRAY);
-		bodyPart.setValue(-1);
+		bodyPart.setValue(0);
 		if (bodyPart.isSnakeHead()) {
 			bodyPart.setSnakeHead(false);
 		}
@@ -52,22 +50,13 @@ public class Snake {
     		Entry<Integer, Cell> entry = cells.next();
     		Cell cell = entry.getValue();
     		if (cell.getValue() == playerID) {
-        		cell.getPanel().setBackground(Color.LIGHT_GRAY);
-        		cell.setValue(-1);
+        		cell.setValue(0);
         		if (cell.isSnakeHead()) {
         			cell.setSnakeHead(false);
         		}
     		}
 
     	}
-    }
-	
-    public Color generateRandomColor() {
-        Random random = new Random();
-        int r = random.nextInt(255);
-        int g = random.nextInt(255);
-        int b = random.nextInt(255);
-        return new Color(r,g,b);
     }
     
     public Cell getHead() {

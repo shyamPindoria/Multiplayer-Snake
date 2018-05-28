@@ -12,10 +12,9 @@ public class Cell {
 	private boolean appleOccupied;
 	private boolean snakeOccupied;
 	
-	public Cell() {
+	public Cell(int value) {
 		this.setPanel(new JPanel());
-		this.panel.setBackground(Color.LIGHT_GRAY);
-		this.setValue(-1);
+		this.setValue(value);
 		setSnakeHead(false);
 	}
 
@@ -33,6 +32,11 @@ public class Cell {
 
 	public void setValue(int value) {
 		this.value = value;
+		if (value <= 6) {
+			this.panel.setBackground(Game.COLORS[value]);
+		} else {
+			this.panel.setBackground(Game.COLORS[6]);
+		}
 	}
 
 	public boolean isSnakeOccupied() {
@@ -56,6 +60,7 @@ public class Cell {
 	}
 
 	public void setSnakeHead(boolean snakeHead) {
+		if (snakeHead) this.panel.setBackground(Game.COLORS[7]);
 		this.snakeHead = snakeHead;
 	}
 	

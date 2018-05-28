@@ -58,7 +58,7 @@ public class GameBoard {
 		this.cells.clear();
 		
 		for (int i = 0; i < size; i++) {
-			this.cells.put(i, new Cell());
+			this.cells.put(i, new Cell(0));
 		}
 		
 	}

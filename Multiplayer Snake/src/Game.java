@@ -3,11 +3,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.ArrayBlockingQueue;
 
-import javax.swing.JPanel;
-
-import java.util.Random;
-
 public class Game {
+	
+	public static final Color[] COLORS = {
+			Color.LIGHT_GRAY, 	// Empty Cell
+			Color.RED, 			// Player 1
+			Color.GREEN, 		// Player 2
+			Color.BLUE,  		// Player 3
+			Color.ORANGE, 		// player 4
+			Color.PINK, 		// Food
+			Color.BLACK,		// Simulated Player
+			Color.DARK_GRAY 	// Snake's Head
+			};
 	
 	public static int numberOfPlayers;
 	public static GameBoard board;
@@ -52,7 +59,7 @@ public class Game {
 		
 		for (int i = 0; i < Game.numberOfPlayers; i++) {
 			
-			HumanPlayer player = new HumanPlayer(i, credentials[i]);
+			HumanPlayer player = new HumanPlayer(i + 1, credentials[i]);
 			// *** CAN'T SYSOUT HERE FOR SOME REASON. GET AN OUTOFBOUNDSEXCEPTION **************** 
 			int playerAlreadyAdded = humanPlayers.indexOf(player);
 			
@@ -75,41 +82,30 @@ public class Game {
 		return ui;
 	}
 	
-	public static HumanPlayer getHumanPlayer(int id) {
-		Iterator<HumanPlayer> playerIterator = Game.humanPlayers.iterator();
-		while (playerIterator.hasNext()) {
-			HumanPlayer player = playerIterator.next();
-			if (player.getPlayerID() == id) {
-				return player;
-			}
-		}
-		return null; // if there are no human players
-	}
-	
 	public static void initGame() {
 
 		for (int i = 0; i < humanPlayers.size(); i++) {
 			// create a new snake and give it a random colour. Then, assign it to a player
 			Snake playerSnake = humanPlayers.get(i).getSnake(); 
 			if (i == 0) {
-				playerSnake.addBodyPart(90, 10, 0, false);
-				playerSnake.addBodyPart(89, 10, 0, false);
-				playerSnake.addBodyPart(88, 10, 0, true);
+				playerSnake.addBodyPart(90, 10, 1, false);
+				playerSnake.addBodyPart(89, 10, 1, false);
+				playerSnake.addBodyPart(88, 10, 1, true);
 				playerSnake.setCurrentDirection(Snake.Direction.LEFT);
 			} else if (i == 1) {
-				playerSnake.addBodyPart(10, 11, 1, false);
-				playerSnake.addBodyPart(10, 12, 1, false);
-				playerSnake.addBodyPart(10, 13, 1, true);
+				playerSnake.addBodyPart(10, 11, 2, false);
+				playerSnake.addBodyPart(10, 12, 2, false);
+				playerSnake.addBodyPart(10, 13, 2, true);
 				playerSnake.setCurrentDirection(Snake.Direction.DOWN);
 			} else if (i == 2) {
-				playerSnake.addBodyPart(10, 90, 2, false);
-				playerSnake.addBodyPart(11, 90, 2, false);
-				playerSnake.addBodyPart(12, 90, 2, true);
+				playerSnake.addBodyPart(10, 90, 3, false);
+				playerSnake.addBodyPart(11, 90, 3, false);
+				playerSnake.addBodyPart(12, 90, 3, true);
 				playerSnake.setCurrentDirection(Snake.Direction.RIGHT);
 			} else if (i == 3) {
-				playerSnake.addBodyPart(90, 91, 3, false);
-				playerSnake.addBodyPart(90, 92, 3, false);
-				playerSnake.addBodyPart(90, 93, 3, true);
+				playerSnake.addBodyPart(90, 91, 4, true);
+				playerSnake.addBodyPart(90, 92, 4, false);
+				playerSnake.addBodyPart(90, 93, 4, false);
 				playerSnake.setCurrentDirection(Snake.Direction.UP);
 			}
 		}
