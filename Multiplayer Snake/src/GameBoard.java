@@ -29,20 +29,8 @@ public class GameBoard {
 		return this.cols;
 	}
 	
-	public int getValueAt(int x, int y) {
-		return this.cells.get((y * rows) + x).getValue();
-	}
-	
-	public void setValueAt(int x, int y, int value) {
-		this.cells.get((y * rows) + x).setValue(value);
-	}
-	
-	public JPanel getCellAt(int index) {
-		return this.cells.get(index).getPanel();
-	}
-	
-	public JPanel getCellAt(int x, int y) {
-		return this.cells.get((y * rows) + x).getPanel();
+	public Cell getCell(int index) {
+		return this.cells.get(index);
 	}
 	
 	public Cell getCell(int x, int y) {
@@ -58,7 +46,7 @@ public class GameBoard {
 		this.cells.clear();
 		
 		for (int i = 0; i < size; i++) {
-			this.cells.put(i, new Cell(0));
+			this.cells.put(i, new Cell(0, i));
 		}
 		
 	}
@@ -69,6 +57,15 @@ public class GameBoard {
 
 	public void setApple(JPanel apple) {
 		this.apple = apple;
+	}
+	
+	public void swapCell(Cell a, Cell b) {
+
+		this.cells.put(a.getIndex(), b);
+		this.cells.put(b.getIndex(), a);
+		int tempIndex = a.getIndex();
+		a.setIndex(b.getIndex());
+		b.setIndex(tempIndex);
 	}
 
 }

@@ -9,16 +9,11 @@ public class HumanPlayer extends Player {
 		this.credentials = credentials;
 	}
 	
-	public void getInput() {
-		
-	}
-	
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		this.getSnake().move();
 		
 	}
-	
 	
 	public Credentials getCredentials() {
 		return this.credentials;

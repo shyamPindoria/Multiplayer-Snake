@@ -1,13 +1,11 @@
-import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map.Entry;
-import java.util.Random;
 
 
 public class Snake {
 	// could use this to tell where a snakes body is. the int values will be the index in the cells map
-	//ArrayList<Integer> snakeBody; 
+	ArrayList<Cell> snakeBody;
+	
+	private int snakeID;
 	
 	Direction currentDirection;
 
@@ -18,8 +16,9 @@ public class Snake {
 	    DOWN;
 	}
 	
-	public Snake() {
-		
+	public Snake(int snakeID) {
+		snakeBody = new ArrayList<Cell> ();
+		this.snakeID = snakeID;
 	}
 	
 	public void setCurrentDirection(Direction direction) {
@@ -30,48 +29,62 @@ public class Snake {
 		return currentDirection;
 	}
 	
-	public void addBodyPart(int x, int y, int playerID, boolean isSnakeHead) {
-		Game.board.getCell(x, y).setValue(playerID);
-		if (isSnakeHead) {
-			Game.board.getCell(x, y).setSnakeHead(true);
+	public void addBodyPart(int x, int y) {
+		
+		if (this.snakeBody.isEmpty()) {
+			Game.board.getCell(x, y).setValue(7);
+			
+		} else {
+			Game.board.getCell(x, y).setValue(snakeID);
 		}
+		
+		this.snakeBody.add(Game.board.getCell(x, y));
+		
 	}
 	
-	public void removeBodyPart(Cell bodyPart) {
-		bodyPart.setValue(0);
-		if (bodyPart.isSnakeHead()) {
-			bodyPart.setSnakeHead(false);
+	public void died() {
+		for (Cell cell : this.snakeBody) {
+			cell.setValue(0);
 		}
 	}
-	
-    public void removeBody(int playerID) {
-    	Iterator<Entry<Integer, Cell>> cells = Game.board.getCells().entrySet().iterator();
-    	while (cells.hasNext()) {
-    		Entry<Integer, Cell> entry = cells.next();
-    		Cell cell = entry.getValue();
-    		if (cell.getValue() == playerID) {
-        		cell.setValue(0);
-        		if (cell.isSnakeHead()) {
-        			cell.setSnakeHead(false);
-        		}
-    		}
-
-    	}
-    }
     
     public Cell getHead() {
-    	Iterator<Entry<Integer, Cell>> entries = Game.board.getCells().entrySet().iterator();
-    	while (entries.hasNext()) {
-    		Entry<Integer, Cell> entry = entries.next();
-    		Cell cell = entry.getValue();
-    		if (cell.isSnakeHead()) {
-    			return cell;
+    	return this.snakeBody.get(0);
+    }
+    
+    public void move() {
+    	
+    	Cell temp = this.getHead();
+    	for (int i = 0; i < this.snakeBody.size(); i++) {
+    		
+    		if (i == 0) {
+    			
+    			if (this.currentDirection == Direction.RIGHT) {
+    				temp =  Game.board.getCell(this.snakeBody.get(i).getIndex() + 1);
+    			}
+    			if (this.currentDirection == Direction.LEFT) {
+    				temp =  Game.board.getCell(this.snakeBody.get(i).getIndex() - 1);
+    			}
+    			if (this.currentDirection == Direction.UP) {
+    				temp =  Game.board.getCell(this.snakeBody.get(i).getIndex() - 100);
+    			}
+    			if (this.currentDirection == Direction.DOWN) {
+    				temp =  Game.board.getCell(this.snakeBody.get(i).getIndex() + 100);
+    			}
+    			
+    			Game.board.swapCell(temp, this.snakeBody.get(i));
+    			
+    		} else {
+    			
+    			Game.board.swapCell(temp, this.snakeBody.get(i));
+    			
     		}
     	}
-    	return null;
     }
     
 }
+
+
 
 // LOOP THROUGH MAP USING THIS...
 //Iterator<Entry<Integer, Cell>> entries = Game.board.getCells().entrySet().iterator();

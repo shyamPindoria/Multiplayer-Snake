@@ -24,7 +24,7 @@ public class Credentials implements Runnable{
 		// Check the credentials
 		if (Game.db.getUsers().get(this.username) != null && Game.db.getUsers().get(this.username).equals(this.password)) {
 			
-			System.out.println(this.username);
+			System.out.println(this.username + " logged in");
 			
 			this.valid = true;
 		} else {

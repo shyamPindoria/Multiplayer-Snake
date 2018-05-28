@@ -1,21 +1,24 @@
-import java.awt.Color;
-
 import javax.swing.JPanel;
 
 public class Cell {
 
-	// need to continually update these three variables
 	private JPanel panel;
 	private int value;
-	private boolean snakeHead;
 	
-	private boolean appleOccupied;
-	private boolean snakeOccupied;
+	private int index;
 	
-	public Cell(int value) {
+	public Cell(int value, int index) {
 		this.setPanel(new JPanel());
 		this.setValue(value);
-		setSnakeHead(false);
+		this.setIndex(index);
+	}
+	
+	public int getIndex() {
+		return this.index;
+	}
+	
+	public void setIndex(int index) {
+		this.index = index;
 	}
 
 	public JPanel getPanel() {
@@ -38,32 +41,5 @@ public class Cell {
 			this.panel.setBackground(Game.COLORS[6]);
 		}
 	}
-
-	public boolean isSnakeOccupied() {
-		return snakeOccupied;
-	}
-
-	public void setSnakeOccupied(boolean snakeOccupied) {
-		this.snakeOccupied = snakeOccupied;
-	}
-
-	public boolean isAppleOccupied() {
-		return appleOccupied;
-	}
-
-	public void setAppleOccupied(boolean appleOccupied) {
-		this.appleOccupied = appleOccupied;
-	}
-
-	public boolean isSnakeHead() {
-		return snakeHead;
-	}
-
-	public void setSnakeHead(boolean snakeHead) {
-		if (snakeHead) this.panel.setBackground(Game.COLORS[7]);
-		this.snakeHead = snakeHead;
-	}
-	
-
 
 }

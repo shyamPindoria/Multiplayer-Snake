@@ -317,9 +317,7 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 		this.boardPane.setBorder(new LineBorder(new Color(0, 0, 0)));
 		this.boardPane.setLayout(new GridLayout(Game.board.getCols(), Game.board.getRows(), 1, 1));
 
-		for (int i = 0; i < Game.board.getRows() * Game.board.getRows(); i++) {
-			this.boardPane.add(Game.board.getCellAt(i));
-		}
+		this.updateGameBoard();
 
 		return this.boardPane;
 	}
@@ -359,9 +357,21 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 			this.scores.get(i).setText(Game.humanPlayers.get(i).getName() + ": " + Game.humanPlayers.get(i).getScore());
 		}
 	}
+	
+	private void updateGameBoard() {
+		
+		this.boardPane.removeAll();
+		this.boardPane.revalidate();
+		
+		for (int i = 0; i < Game.board.getRows() * Game.board.getCols(); i++) {
+			this.boardPane.add(Game.board.getCell(i).getPanel());
+		}
+		
+	}
 
 	public void update() {
 		this.updateScores();
+		this.updateGameBoard();
 	}
 
 	@Override

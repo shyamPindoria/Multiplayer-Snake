@@ -1,6 +1,5 @@
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class Game {
@@ -25,7 +24,7 @@ public class Game {
 	
 	public static ArrayList<HumanPlayer> humanPlayers;
 	
-	public static ArrayBlockingQueue<HumanPlayer> buffer_HumanPlayers; 
+	public static ArrayBlockingQueue<HumanPlayer> loginBuffer; 
 	
 	public static boolean gameStarted = false;
 	
@@ -39,7 +38,7 @@ public class Game {
 		
 		humanPlayers = new ArrayList<HumanPlayer>();
 		
-		buffer_HumanPlayers = new ArrayBlockingQueue<HumanPlayer>(4);
+		loginBuffer = new ArrayBlockingQueue<HumanPlayer>(4);
 		
 		db = new MapDB();
 		
@@ -70,7 +69,7 @@ public class Game {
 			}
 			
 			try {
-				buffer_HumanPlayers.put(player);
+				loginBuffer.put(player);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -85,27 +84,28 @@ public class Game {
 	public static void initGame() {
 
 		for (int i = 0; i < humanPlayers.size(); i++) {
-			// create a new snake and give it a random colour. Then, assign it to a player
+
 			Snake playerSnake = humanPlayers.get(i).getSnake(); 
 			if (i == 0) {
-				playerSnake.addBodyPart(90, 10, 1, false);
-				playerSnake.addBodyPart(89, 10, 1, false);
-				playerSnake.addBodyPart(88, 10, 1, true);
+				// First part added is a head by default i.e cell has index 7
+				playerSnake.addBodyPart(88, 10);
+				playerSnake.addBodyPart(89, 10);
+				playerSnake.addBodyPart(90, 10);
 				playerSnake.setCurrentDirection(Snake.Direction.LEFT);
 			} else if (i == 1) {
-				playerSnake.addBodyPart(10, 11, 2, false);
-				playerSnake.addBodyPart(10, 12, 2, false);
-				playerSnake.addBodyPart(10, 13, 2, true);
+				playerSnake.addBodyPart(10, 13);
+				playerSnake.addBodyPart(10, 12);
+				playerSnake.addBodyPart(10, 11);
 				playerSnake.setCurrentDirection(Snake.Direction.DOWN);
 			} else if (i == 2) {
-				playerSnake.addBodyPart(10, 90, 3, false);
-				playerSnake.addBodyPart(11, 90, 3, false);
-				playerSnake.addBodyPart(12, 90, 3, true);
+				playerSnake.addBodyPart(12, 90);
+				playerSnake.addBodyPart(11, 90);
+				playerSnake.addBodyPart(10, 90);
 				playerSnake.setCurrentDirection(Snake.Direction.RIGHT);
 			} else if (i == 3) {
-				playerSnake.addBodyPart(90, 91, 4, true);
-				playerSnake.addBodyPart(90, 92, 4, false);
-				playerSnake.addBodyPart(90, 93, 4, false);
+				playerSnake.addBodyPart(90, 91);
+				playerSnake.addBodyPart(90, 92);
+				playerSnake.addBodyPart(90, 93);
 				playerSnake.setCurrentDirection(Snake.Direction.UP);
 			}
 		}
