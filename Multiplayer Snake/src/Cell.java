@@ -4,13 +4,19 @@ import javax.swing.JPanel;
 
 public class Cell {
 
+	// need to continually update these three variables
 	private JPanel panel;
 	private int value;
+	private boolean snakeHead;
+	
+	private boolean appleOccupied;
+	private boolean snakeOccupied;
 	
 	public Cell() {
 		this.setPanel(new JPanel());
 		this.panel.setBackground(Color.LIGHT_GRAY);
-		this.setValue(0);
+		this.setValue(-1);
+		setSnakeHead(false);
 	}
 
 	public JPanel getPanel() {
@@ -27,6 +33,30 @@ public class Cell {
 
 	public void setValue(int value) {
 		this.value = value;
+	}
+
+	public boolean isSnakeOccupied() {
+		return snakeOccupied;
+	}
+
+	public void setSnakeOccupied(boolean snakeOccupied) {
+		this.snakeOccupied = snakeOccupied;
+	}
+
+	public boolean isAppleOccupied() {
+		return appleOccupied;
+	}
+
+	public void setAppleOccupied(boolean appleOccupied) {
+		this.appleOccupied = appleOccupied;
+	}
+
+	public boolean isSnakeHead() {
+		return snakeHead;
+	}
+
+	public void setSnakeHead(boolean snakeHead) {
+		this.snakeHead = snakeHead;
 	}
 	
 

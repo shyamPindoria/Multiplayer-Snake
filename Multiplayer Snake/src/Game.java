@@ -87,29 +87,37 @@ public class Game {
 	}
 	
 	public static void initGame() {
-		// loop through human players
+
 		for (int i = 0; i < humanPlayers.size(); i++) {
 			// create a new snake and give it a random colour. Then, assign it to a player
 			Snake playerSnake = humanPlayers.get(i).getSnake(); 
 			if (i == 0) {
-				playerSnake.addBodyPart(board.getCellAt(90, 10));
-				playerSnake.addBodyPart(board.getCellAt(89,10));
-				playerSnake.addBodyPart(board.getCellAt(88,10));
+				playerSnake.addBodyPart(90, 10, 0, false);
+				playerSnake.addBodyPart(89, 10, 0, false);
+				playerSnake.addBodyPart(88, 10, 0, true);
+				playerSnake.setCurrentDirection(Snake.Direction.LEFT);
 			} else if (i == 1) {
-				playerSnake.addBodyPart(board.getCellAt(10, 11));
-				playerSnake.addBodyPart(board.getCellAt(10, 12));
-				playerSnake.addBodyPart(board.getCellAt(10, 13));
+				playerSnake.addBodyPart(10, 11, 1, false);
+				playerSnake.addBodyPart(10, 12, 1, false);
+				playerSnake.addBodyPart(10, 13, 1, true);
+				playerSnake.setCurrentDirection(Snake.Direction.DOWN);
 			} else if (i == 2) {
-				playerSnake.addBodyPart(board.getCellAt(10, 90));
-				playerSnake.addBodyPart(board.getCellAt(11, 90));
-				playerSnake.addBodyPart(board.getCellAt(12, 90));
+				playerSnake.addBodyPart(10, 90, 2, false);
+				playerSnake.addBodyPart(11, 90, 2, false);
+				playerSnake.addBodyPart(12, 90, 2, true);
+				playerSnake.setCurrentDirection(Snake.Direction.RIGHT);
 			} else if (i == 3) {
-				playerSnake.addBodyPart(board.getCellAt(90, 91));
-				playerSnake.addBodyPart(board.getCellAt(90, 92));
-				playerSnake.addBodyPart(board.getCellAt(90, 93));
+				playerSnake.addBodyPart(90, 91, 3, false);
+				playerSnake.addBodyPart(90, 92, 3, false);
+				playerSnake.addBodyPart(90, 93, 3, true);
+				playerSnake.setCurrentDirection(Snake.Direction.UP);
 			}
-			playerSnake.setColor();
 		}
+		
+		// place apple in a random cell
+		
+		// note: 
+		// food isn't placed and values for each cell are not set
 		
 	}
 	
