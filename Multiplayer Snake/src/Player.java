@@ -14,7 +14,25 @@ public abstract class Player implements Runnable{
 	}
 	
 	public void addMove(Snake.Direction direction) {
-		this.snake.setCurrentDirection(direction);
+		
+		if (this.snake.currentDirection == Snake.Direction.UP) {
+			if (direction != Snake.Direction.DOWN) {
+				this.snake.setCurrentDirection(direction);
+			}
+		} else if (this.snake.currentDirection == Snake.Direction.DOWN) {
+			if (direction != Snake.Direction.UP) {
+				this.snake.setCurrentDirection(direction);
+			}
+		} else if (this.snake.currentDirection == Snake.Direction.LEFT) {
+			if (direction != Snake.Direction.RIGHT) {
+				this.snake.setCurrentDirection(direction);
+			}
+		} else if (this.snake.currentDirection == Snake.Direction.RIGHT) {
+			if (direction != Snake.Direction.LEFT) {
+				this.snake.setCurrentDirection(direction);
+			}
+		}
+		
 	}
 	
 	public String getName() {

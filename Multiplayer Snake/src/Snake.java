@@ -25,10 +25,6 @@ public class Snake {
 		currentDirection = direction;
 	}
 	
-	public Direction getCurrentDirection() {
-		return currentDirection;
-	}
-	
 	public void addBodyPart(int x, int y) {
 		
 		if (this.snakeBody.isEmpty()) {
