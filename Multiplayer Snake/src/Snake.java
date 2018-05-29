@@ -62,10 +62,10 @@ public class Snake {
     				temp =  Game.board.getCell(this.snakeBody.get(i).getIndex() - 1);
     			}
     			if (this.currentDirection == Direction.UP) {
-    				temp =  Game.board.getCell(this.snakeBody.get(i).getIndex() - 100);
+    				temp =  Game.board.getCell(this.snakeBody.get(i).getIndex() - Game.board.getRows());
     			}
     			if (this.currentDirection == Direction.DOWN) {
-    				temp =  Game.board.getCell(this.snakeBody.get(i).getIndex() + 100);
+    				temp =  Game.board.getCell(this.snakeBody.get(i).getIndex() + Game.board.getRows());
     			}
     			
     			Game.board.swapCell(temp, this.snakeBody.get(i));

@@ -49,8 +49,6 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 	private JLabel[] invalidLoginDetails;
 	private JTextField[] usernames;
 	private JPasswordField[] passwords;
-	
-	private Timer timer;
 
 
 	public UIController() {
@@ -76,15 +74,6 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 		this.contentPane.add(this.createStartPane(), "startPane");
 
 		this.contentCardLayout.show(this.contentPane, "startPane");
-		
-		timer = new Timer(500, new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Game.server.update();
-			}
-			
-		});
 		
 		this.setVisible(true);
 
@@ -409,9 +398,6 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 				credentials[i] = new Credentials(i + 1, this.usernames[i].getText(), new String(this.passwords[i].getPassword()));
 
 			}
-			
-			// start timer
-			timer.start();
 
 			// Login users
 			Game.createPlayers(credentials);

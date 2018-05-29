@@ -1,6 +1,10 @@
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.concurrent.ArrayBlockingQueue;
+
+import javax.swing.Timer;
 
 public class Game {
 	
@@ -30,6 +34,8 @@ public class Game {
 	
 	public static boolean gameOver = false;
 	
+	private static Timer timer;
+	
 	public static void main(String[] args) {
 
 		board = new GameBoard(100, 100);
@@ -44,7 +50,14 @@ public class Game {
 		
 		server = new Server();
 		
-		
+		timer = new Timer(500, new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				server.update();
+			}
+			
+		});
 		
 	}
 	
@@ -109,6 +122,9 @@ public class Game {
 				playerSnake.setCurrentDirection(Snake.Direction.UP);
 			}
 		}
+		
+		// Start timer
+		timer.start();
 		
 		// place apple in a random cell
 		
