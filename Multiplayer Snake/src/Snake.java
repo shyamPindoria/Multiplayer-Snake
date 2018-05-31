@@ -54,8 +54,8 @@ public class Snake {
 
 			if (i == 0) {
 
-				int x = Game.board.convertToX(temp.getIndex());
-				int y = Game.board.convertToY(temp.getIndex());
+				int x = temp.getX();
+				int y = temp.getY();
 
 				if (this.currentDirection == Direction.RIGHT) {
 					if (x == 99) {

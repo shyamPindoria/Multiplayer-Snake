@@ -1,3 +1,5 @@
+import java.util.Random;
+
 
 public class SimulatedPlayer extends Player {
 
@@ -7,7 +9,17 @@ public class SimulatedPlayer extends Player {
 		
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
+		
+		Random rand = new Random();
+
+		int  n = rand.nextInt(4);
+		
+		if (n == 0) this.getSnake().setCurrentDirection(Snake.Direction.RIGHT);
+		if (n == 1) this.getSnake().setCurrentDirection(Snake.Direction.LEFT);
+		if (n == 2) this.getSnake().setCurrentDirection(Snake.Direction.UP);
+		if (n == 3) this.getSnake().setCurrentDirection(Snake.Direction.DOWN);
+		
+		this.getSnake().move();
 		
 	}
 	

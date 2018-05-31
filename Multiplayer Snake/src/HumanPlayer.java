@@ -11,6 +11,7 @@ public class HumanPlayer extends Player {
 	
 	@Override
 	public void run() {
+		
 		this.getSnake().move();
 		
 	}

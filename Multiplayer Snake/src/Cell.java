@@ -20,6 +20,18 @@ public class Cell {
 	public void setIndex(int index) {
 		this.index = index;
 	}
+	
+	public int getX() {
+		
+		return value % Game.board.getRows();
+		
+	}
+	
+	public int getY() {
+		
+		return value / Game.board.getRows();
+		
+	}
 
 	public JPanel getPanel() {
 		return panel;

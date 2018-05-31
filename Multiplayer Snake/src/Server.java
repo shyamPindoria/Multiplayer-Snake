@@ -21,6 +21,11 @@ public class Server implements Runnable {
 		for (HumanPlayer player : Game.humanPlayers) {
 			pool.submit(player);
 		}
+		
+		for (SimulatedPlayer player : Game.simulatedPlayers) {
+			pool.submit(player);
+		}
+		
 		Game.getUI().update();
 		
 		
