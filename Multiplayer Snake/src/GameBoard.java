@@ -37,6 +37,18 @@ public class GameBoard {
 		return cells.get((y * rows) + x);
 	}
 	
+	public int convertToX(int value) {
+		
+		return value % cols;
+		
+	}
+	
+	public int convertToY(int value) {
+		
+		return value / rows;
+		
+	}
+	
 	public ConcurrentHashMap<Integer, Cell> getCells() {
 		return cells;
 	}
