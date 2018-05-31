@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import javax.swing.Timer;
@@ -14,7 +15,7 @@ public class Game {
 			Color.GREEN, 		// Player 2
 			Color.BLUE,  		// Player 3
 			Color.ORANGE, 		// player 4
-			Color.PINK, 		// Food
+			Color.MAGENTA, 		// Food
 			Color.BLACK,		// Simulated Player
 			Color.DARK_GRAY 	// Snake's Head
 			};
@@ -127,6 +128,8 @@ public class Game {
 		timer.start();
 		
 		// place apple in a random cell
+		int randomCell = new Random().nextInt(10000) + 1;
+		board.getCell(randomCell).getPanel().setBackground(COLORS[5]);
 		
 		// note: 
 		// food isn't placed and values for each cell are not set
