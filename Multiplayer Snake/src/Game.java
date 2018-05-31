@@ -3,7 +3,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Stack;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.swing.Timer;
 
@@ -16,8 +18,8 @@ public class Game {
 			Color.BLUE,  		// Player 3
 			Color.ORANGE, 		// player 4
 			Color.MAGENTA, 		// Food
-			Color.BLACK,		// Simulated Player
-			Color.DARK_GRAY 	// Snake's Head
+			Color.BLACK,		// Snake's Head
+			Color.GRAY		 	// Simulated Player
 			};
 	
 	public static int numberOfPlayers;
@@ -27,9 +29,11 @@ public class Game {
 	
 	public static Server server;
 	
-	public static ArrayList<HumanPlayer> humanPlayers;
+	public static ConcurrentHashMap<Integer, HumanPlayer> humanPlayers;
 	
-	public static ArrayList<SimulatedPlayer> simulatedPlayers;
+	public static ConcurrentHashMap<Integer, SimulatedPlayer> simulatedPlayers;
+	
+	public static Stack<Integer> playersToDie;
 	
 	public static ArrayBlockingQueue<HumanPlayer> loginBuffer; 
 	
@@ -45,9 +49,11 @@ public class Game {
 		
 		ui = new UIController();
 		
-		humanPlayers = new ArrayList<HumanPlayer>();
+		humanPlayers = new ConcurrentHashMap<Integer, HumanPlayer>();
 		
-		simulatedPlayers = new ArrayList<SimulatedPlayer>();
+		simulatedPlayers = new ConcurrentHashMap<Integer, SimulatedPlayer>();
+		
+		playersToDie = new Stack<Integer>();
 		
 		loginBuffer = new ArrayBlockingQueue<HumanPlayer>(4);
 		
@@ -55,7 +61,7 @@ public class Game {
 		
 		server = new Server();
 		
-		timer = new Timer(500, new ActionListener() {
+		timer = new Timer(5, new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -74,17 +80,12 @@ public class Game {
 	 */
 	public static void createPlayers (Credentials[] credentials) {
 		
-		for (int i = 0; i < Game.numberOfPlayers; i++) {
+		for (int i = 1; i <= Game.numberOfPlayers; i++) {
 			
-			HumanPlayer player = new HumanPlayer(i + 1, credentials[i]);
-			// *** CAN'T SYSOUT HERE FOR SOME REASON. GET AN OUTOFBOUNDSEXCEPTION **************** 
-			int playerAlreadyAdded = humanPlayers.indexOf(player);
+			HumanPlayer player = new HumanPlayer(i, credentials[i-1]);
 			
-			if (playerAlreadyAdded == -1) {
-				humanPlayers.add(player);
-			} else {
-				humanPlayers.set(playerAlreadyAdded, player);
-			}
+				humanPlayers.put(i, player);
+			
 			
 			try {
 				loginBuffer.put(player);
@@ -101,7 +102,7 @@ public class Game {
 	
 	public static void initGame() {
 		
-		for(int i = 1; i < 101; i++) {
+		for(int i = 7; i < 10; i++) {
 			SimulatedPlayer sim = new SimulatedPlayer(i, "");
 			Random r = new Random();
 			int randomHeadX = r.nextInt(99);
@@ -109,31 +110,31 @@ public class Game {
 			sim.getSnake().addBodyPart(randomHeadX, randomHeadY);
 			sim.getSnake().addBodyPart(randomHeadX+1, randomHeadY);
 			sim.getSnake().addBodyPart(randomHeadX+2, randomHeadY);
-			sim.addMove(Snake.Direction.DOWN);
-			simulatedPlayers.add(sim);
+			sim.getSnake().setCurrentDirection(Snake.Direction.LEFT);
+			simulatedPlayers.put(i, sim);
 		}
 		System.out.println(simulatedPlayers.size());
 
-		for (int i = 0; i < humanPlayers.size(); i++) {
+		for (int i = 1; i <= Game.numberOfPlayers; i++) {
 
 			Snake playerSnake = humanPlayers.get(i).getSnake(); 
-			if (i == 0) {
+			if (i == 1) {
 				// First part added is a head by default i.e cell has index 7
 				playerSnake.addBodyPart(88, 10);
 				playerSnake.addBodyPart(89, 10);
 				playerSnake.addBodyPart(90, 10);
 				playerSnake.setCurrentDirection(Snake.Direction.LEFT);
-			} else if (i == 1) {
+			} else if (i == 2) {
 				playerSnake.addBodyPart(10, 13);
 				playerSnake.addBodyPart(10, 12);
 				playerSnake.addBodyPart(10, 11);
 				playerSnake.setCurrentDirection(Snake.Direction.DOWN);
-			} else if (i == 2) {
+			} else if (i == 3) {
 				playerSnake.addBodyPart(12, 90);
 				playerSnake.addBodyPart(11, 90);
 				playerSnake.addBodyPart(10, 90);
 				playerSnake.setCurrentDirection(Snake.Direction.RIGHT);
-			} else if (i == 3) {
+			} else if (i == 4) {
 				playerSnake.addBodyPart(90, 91);
 				playerSnake.addBodyPart(90, 92);
 				playerSnake.addBodyPart(90, 93);
@@ -155,6 +156,9 @@ public class Game {
 		
 	}
 	
+	public static synchronized void removePlayer(int id) {
+		playersToDie.push(id);
+	}
 	
 	
 

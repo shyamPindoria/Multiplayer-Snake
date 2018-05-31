@@ -25,7 +25,7 @@ public class Snake {
 	public void addBodyPart(int x, int y) {
 
 		if (this.snakeBody.isEmpty()) {
-			Game.board.getCell(x, y).setValue(7);
+			Game.board.getCell(x, y).setValue(6);
 
 		} else {
 			Game.board.getCell(x, y).setValue(snakeID);
@@ -39,6 +39,9 @@ public class Snake {
 		for (Cell cell : this.snakeBody) {
 			cell.setValue(0);
 		}
+		
+		Game.removePlayer(snakeID);
+		
 	}
 
 	public Cell getHead() {
@@ -90,6 +93,7 @@ public class Snake {
 				Game.board.swapCell(temp, this.snakeBody.get(i));
 			} else {
 				died();
+				System.out.println("Died");
 			}
 
 		}

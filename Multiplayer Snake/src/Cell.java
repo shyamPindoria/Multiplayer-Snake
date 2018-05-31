@@ -23,13 +23,13 @@ public class Cell {
 	
 	public int getX() {
 		
-		return value % Game.board.getRows();
+		return index % Game.board.getRows();
 		
 	}
 	
 	public int getY() {
 		
-		return value / Game.board.getRows();
+		return index / Game.board.getRows();
 		
 	}
 
@@ -50,7 +50,7 @@ public class Cell {
 		if (value <= 6) {
 			this.panel.setBackground(Game.COLORS[value]);
 		} else {
-			this.panel.setBackground(Game.COLORS[6]);
+			this.panel.setBackground(Game.COLORS[7]);
 		}
 	}
 

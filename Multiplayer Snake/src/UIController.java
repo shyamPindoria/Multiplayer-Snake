@@ -279,18 +279,18 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 		gbc_labelScores.gridy = 0;
 		this.scorePane.add(labelScores, gbc_labelScores);
 
-		for (int i = 0; i < Game.numberOfPlayers; i++) {
+		for (HumanPlayer player : Game.humanPlayers.values()) {
 
-			JLabel labelPlayerScore = new JLabel(Game.humanPlayers.get(i).getName() + ": " + Game.humanPlayers.get(i).getScore());
+			JLabel labelPlayerScore = new JLabel(player.getName() + ": " + player.getScore());
 			GridBagConstraints gbc_labelPlayerScore = new GridBagConstraints();
 			gbc_labelPlayerScore.insets = new Insets(0, 10, 0, 10);
-			if (i == Game.numberOfPlayers - 1) {
+			if (player.getPlayerID() == Game.numberOfPlayers) {
 				gbc_labelPlayerScore.weighty = 1.0;
 				gbc_labelPlayerScore.anchor = GridBagConstraints.NORTH;
 			}
 			gbc_labelPlayerScore.gridx = 0;
-			gbc_labelPlayerScore.gridy = i + 1;
-			labelPlayerScore.setForeground(Game.COLORS[i+1]);
+			gbc_labelPlayerScore.gridy = player.getPlayerID() + 1;
+			labelPlayerScore.setForeground(Game.COLORS[player.getPlayerID()]);
 			this.scorePane.add(labelPlayerScore, gbc_labelPlayerScore);
 			this.scores.add(labelPlayerScore);
 
@@ -316,9 +316,9 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 			Game.gameStarted = true;
 
 			// Check if all players have successfully logged in
-			for (int i = 0; i < Game.numberOfPlayers; i++) {
+			for (HumanPlayer player : Game.humanPlayers.values()) {
 
-				if (!Game.humanPlayers.get(i).getCredentials().isValid()) {
+				if (!player.getCredentials().isValid()) {
 					Game.gameStarted = false;
 				}
 			}
@@ -341,8 +341,8 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 	}
 
 	private void updateScores() {
-		for (int i = 0; i < Game.numberOfPlayers; i++) {
-			this.scores.get(i).setText(Game.humanPlayers.get(i).getName() + ": " + Game.humanPlayers.get(i).getScore());
+		for (HumanPlayer player : Game.humanPlayers.values()) {
+			this.scores.get(player.getPlayerID()-1).setText(player.getName() + ": " + player.getScore());
 		}
 	}
 	
@@ -410,31 +410,31 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 		int key = e.getKeyCode();
 		
 		if (Game.numberOfPlayers > 0) {
-			if (key == KeyEvent.VK_UP) Game.humanPlayers.get(0).addMove(Snake.Direction.UP);
-			else if (key == KeyEvent.VK_DOWN) Game.humanPlayers.get(0).addMove(Snake.Direction.DOWN);
-			else if (key == KeyEvent.VK_LEFT) Game.humanPlayers.get(0).addMove(Snake.Direction.LEFT);
-			else if (key == KeyEvent.VK_RIGHT) Game.humanPlayers.get(0).addMove(Snake.Direction.RIGHT);
+			if (key == KeyEvent.VK_UP) Game.humanPlayers.get(1).addMove(Snake.Direction.UP);
+			else if (key == KeyEvent.VK_DOWN) Game.humanPlayers.get(1).addMove(Snake.Direction.DOWN);
+			else if (key == KeyEvent.VK_LEFT) Game.humanPlayers.get(1).addMove(Snake.Direction.LEFT);
+			else if (key == KeyEvent.VK_RIGHT) Game.humanPlayers.get(1).addMove(Snake.Direction.RIGHT);
 		}
 		
 		if (Game.numberOfPlayers > 1) {
-			if (key == KeyEvent.VK_W) Game.humanPlayers.get(1).addMove(Snake.Direction.UP);
-			else if (key == KeyEvent.VK_S) Game.humanPlayers.get(1).addMove(Snake.Direction.DOWN);
-			else if (key == KeyEvent.VK_A) Game.humanPlayers.get(1).addMove(Snake.Direction.LEFT);
-			else if (key == KeyEvent.VK_D) Game.humanPlayers.get(1).addMove(Snake.Direction.RIGHT);
+			if (key == KeyEvent.VK_W) Game.humanPlayers.get(2).addMove(Snake.Direction.UP);
+			else if (key == KeyEvent.VK_S) Game.humanPlayers.get(2).addMove(Snake.Direction.DOWN);
+			else if (key == KeyEvent.VK_A) Game.humanPlayers.get(2).addMove(Snake.Direction.LEFT);
+			else if (key == KeyEvent.VK_D) Game.humanPlayers.get(2).addMove(Snake.Direction.RIGHT);
 		}
 		
 		if (Game.numberOfPlayers > 2) {
-			if (key == KeyEvent.VK_T) Game.humanPlayers.get(2).addMove(Snake.Direction.UP);
-			else if (key == KeyEvent.VK_G) Game.humanPlayers.get(2).addMove(Snake.Direction.DOWN);
-			else if (key == KeyEvent.VK_F) Game.humanPlayers.get(2).addMove(Snake.Direction.LEFT);
-			else if (key == KeyEvent.VK_H) Game.humanPlayers.get(2).addMove(Snake.Direction.RIGHT);
+			if (key == KeyEvent.VK_T) Game.humanPlayers.get(3).addMove(Snake.Direction.UP);
+			else if (key == KeyEvent.VK_G) Game.humanPlayers.get(3).addMove(Snake.Direction.DOWN);
+			else if (key == KeyEvent.VK_F) Game.humanPlayers.get(3).addMove(Snake.Direction.LEFT);
+			else if (key == KeyEvent.VK_H) Game.humanPlayers.get(3).addMove(Snake.Direction.RIGHT);
 		}
 		
 		if (Game.numberOfPlayers > 3) {
-			if (key == KeyEvent.VK_I) Game.humanPlayers.get(3).addMove(Snake.Direction.UP);
-			else if (key == KeyEvent.VK_K) Game.humanPlayers.get(3).addMove(Snake.Direction.DOWN);
-			else if (key == KeyEvent.VK_J) Game.humanPlayers.get(3).addMove(Snake.Direction.LEFT);
-			else if (key == KeyEvent.VK_L) Game.humanPlayers.get(3).addMove(Snake.Direction.RIGHT);
+			if (key == KeyEvent.VK_I) Game.humanPlayers.get(4).addMove(Snake.Direction.UP);
+			else if (key == KeyEvent.VK_K) Game.humanPlayers.get(4).addMove(Snake.Direction.DOWN);
+			else if (key == KeyEvent.VK_J) Game.humanPlayers.get(4).addMove(Snake.Direction.LEFT);
+			else if (key == KeyEvent.VK_L) Game.humanPlayers.get(4).addMove(Snake.Direction.RIGHT);
 		}
 		
 	}

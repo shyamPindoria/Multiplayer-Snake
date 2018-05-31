@@ -14,10 +14,10 @@ public class SimulatedPlayer extends Player {
 
 		int  n = rand.nextInt(4);
 		
-		if (n == 0) this.getSnake().setCurrentDirection(Snake.Direction.RIGHT);
-		if (n == 1) this.getSnake().setCurrentDirection(Snake.Direction.LEFT);
-		if (n == 2) this.getSnake().setCurrentDirection(Snake.Direction.UP);
-		if (n == 3) this.getSnake().setCurrentDirection(Snake.Direction.DOWN);
+		if (n == 0) this.addMove(Snake.Direction.RIGHT);
+		if (n == 1) this.addMove(Snake.Direction.LEFT);
+		if (n == 2) this.addMove(Snake.Direction.UP);
+		if (n == 3) this.addMove(Snake.Direction.DOWN);
 		
 		this.getSnake().move();
 		

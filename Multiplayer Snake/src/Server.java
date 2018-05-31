@@ -18,12 +18,25 @@ public class Server implements Runnable {
 	public void update() {
 		//System.out.println("beep");
 		
-		for (HumanPlayer player : Game.humanPlayers) {
+		for (HumanPlayer player : Game.humanPlayers.values()) {
+			pool.submit(player);
+			System.out.println(Game.humanPlayers.size());
+		}
+		
+		
+		
+		for (SimulatedPlayer player : Game.simulatedPlayers.values()) {
 			pool.submit(player);
 		}
 		
-		for (SimulatedPlayer player : Game.simulatedPlayers) {
-			pool.submit(player);
+		while (!Game.playersToDie.isEmpty()) {
+			int playerID = Game.playersToDie.pop();
+			if (playerID <= 4) {
+				Game.humanPlayers.remove(playerID);
+			} else {
+				Game.simulatedPlayers.remove(playerID);
+			}
+				
 		}
 		
 		Game.getUI().update();
