@@ -1,29 +1,28 @@
 import java.awt.BorderLayout;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.border.EmptyBorder;
 import java.awt.CardLayout;
-import javax.swing.JLabel;
-import java.awt.GridBagLayout;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.awt.Font;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
-import javax.swing.JComboBox;
+
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.Timer;
-
-import java.awt.GridLayout;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 public class UIController extends JFrame implements ActionListener, KeyListener {
 
@@ -438,9 +437,6 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 			else if (key == KeyEvent.VK_L) Game.humanPlayers.get(3).addMove(Snake.Direction.RIGHT);
 		}
 		
-
-		
-
 	}
 
 	@Override

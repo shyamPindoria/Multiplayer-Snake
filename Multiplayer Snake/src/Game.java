@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 
-import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class Game {
@@ -30,6 +29,8 @@ public class Game {
 	
 	public static ArrayList<HumanPlayer> humanPlayers;
 	
+	public static ArrayList<SimulatedPlayer> simulatedPlayers;
+	
 	public static ArrayBlockingQueue<HumanPlayer> loginBuffer; 
 	
 	public static boolean gameStarted = false;
@@ -45,6 +46,8 @@ public class Game {
 		ui = new UIController();
 		
 		humanPlayers = new ArrayList<HumanPlayer>();
+		
+		simulatedPlayers = new ArrayList<SimulatedPlayer>();
 		
 		loginBuffer = new ArrayBlockingQueue<HumanPlayer>(4);
 		
@@ -97,6 +100,19 @@ public class Game {
 	}
 	
 	public static void initGame() {
+		
+		for(int i = 1; i < 101; i++) {
+			SimulatedPlayer sim = new SimulatedPlayer(i, "");
+			Random r = new Random();
+			int randomHeadX = r.nextInt(99);
+			int randomHeadY = r.nextInt(99);
+			sim.getSnake().addBodyPart(randomHeadX, randomHeadY);
+			sim.getSnake().addBodyPart(randomHeadX+1, randomHeadY);
+			sim.getSnake().addBodyPart(randomHeadX+2, randomHeadY);
+			sim.addMove(Snake.Direction.DOWN);
+			simulatedPlayers.add(sim);
+		}
+		System.out.println(simulatedPlayers.size());
 
 		for (int i = 0; i < humanPlayers.size(); i++) {
 
@@ -138,6 +154,8 @@ public class Game {
 		// food isn't placed and values for each cell are not set
 		
 	}
+	
+	
 	
 
 	
