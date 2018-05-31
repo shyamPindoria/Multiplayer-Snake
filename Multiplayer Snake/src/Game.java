@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 
+import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class Game {
@@ -130,6 +131,8 @@ public class Game {
 		// place apple in a random cell
 		int randomCell = new Random().nextInt(10000) + 1;
 		board.getCell(randomCell).getPanel().setBackground(COLORS[5]);
+		board.setApple(board.getCell(randomCell).getPanel());
+		
 		
 		// note: 
 		// food isn't placed and values for each cell are not set
