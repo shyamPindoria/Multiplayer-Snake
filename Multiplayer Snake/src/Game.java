@@ -100,18 +100,29 @@ public class Game {
 
 	public static void initGame() {
 
-		 for(int i = 7; i <= 107; i++) {
-		 SimulatedPlayer sim = new SimulatedPlayer(i, "");
-		 Random r = new Random();
-		 int randomHeadX = r.nextInt(99);
-		 int randomHeadY = r.nextInt(99);
-		 sim.getSnake().addBodyPart(randomHeadX, randomHeadY);
-		 sim.getSnake().addBodyPart(randomHeadX+1, randomHeadY);
-		 sim.getSnake().addBodyPart(randomHeadX+2, randomHeadY);
-		 sim.getSnake().setCurrentDirection(Snake.Direction.LEFT);
-		 simulatedPlayers.put(i, sim);
-		 }
-		 System.out.println(simulatedPlayers.size());
+		for(int i = 7; i <= 107; i++) {
+
+			SimulatedPlayer sim = new SimulatedPlayer(i, "Bot " + (i - 6));
+			Random r = new Random();
+			int randomHeadX = r.nextInt(96);
+			int randomHeadY = r.nextInt(96);
+			if ( board.getCell(randomHeadX, randomHeadY).getValue() == 0 &&
+					board.getCell(randomHeadX+1, randomHeadY).getValue() == 0 &&
+					board.getCell(randomHeadX+1, randomHeadY).getValue() == 0 ) {
+
+				sim.getSnake().addBodyPart(randomHeadX, randomHeadY);
+				sim.getSnake().addBodyPart(randomHeadX+1, randomHeadY);
+				sim.getSnake().addBodyPart(randomHeadX+2, randomHeadY);
+
+			}
+
+			sim.getSnake().setCurrentDirection(Snake.Direction.LEFT);
+
+			simulatedPlayers.put(i, sim);
+
+		}
+
+		System.out.println(simulatedPlayers.size());
 
 		for (int i = 1; i <= Game.numberOfPlayers; i++) {
 
@@ -145,7 +156,7 @@ public class Game {
 
 		// place apple in a random cell
 		int randomCell = new Random().nextInt(10000) + 1;
-		board.getCell(randomCell).getPanel().setBackground(COLORS[5]);
+		board.getCell(randomCell).setValue(5);
 		board.setApple(board.getCell(randomCell).getPanel());
 
 		// note:

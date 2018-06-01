@@ -101,7 +101,6 @@ public class Snake {
 				Game.board.swapCell(temp, this.snakeBody.get(i));
 			} else {
 				died();
-				System.out.println("Died");
 			}
 
 		}
