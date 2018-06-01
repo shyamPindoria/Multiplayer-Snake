@@ -409,28 +409,28 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 		
-		if (Game.numberOfPlayers > 0) {
+		if (Game.humanPlayers.containsKey(1)) {
 			if (key == KeyEvent.VK_UP) Game.humanPlayers.get(1).addMove(Snake.Direction.UP);
 			else if (key == KeyEvent.VK_DOWN) Game.humanPlayers.get(1).addMove(Snake.Direction.DOWN);
 			else if (key == KeyEvent.VK_LEFT) Game.humanPlayers.get(1).addMove(Snake.Direction.LEFT);
 			else if (key == KeyEvent.VK_RIGHT) Game.humanPlayers.get(1).addMove(Snake.Direction.RIGHT);
 		}
 		
-		if (Game.numberOfPlayers > 1) {
+		if (Game.humanPlayers.containsKey(2)) {
 			if (key == KeyEvent.VK_W) Game.humanPlayers.get(2).addMove(Snake.Direction.UP);
 			else if (key == KeyEvent.VK_S) Game.humanPlayers.get(2).addMove(Snake.Direction.DOWN);
 			else if (key == KeyEvent.VK_A) Game.humanPlayers.get(2).addMove(Snake.Direction.LEFT);
 			else if (key == KeyEvent.VK_D) Game.humanPlayers.get(2).addMove(Snake.Direction.RIGHT);
 		}
 		
-		if (Game.numberOfPlayers > 2) {
+		if (Game.humanPlayers.containsKey(3)) {
 			if (key == KeyEvent.VK_T) Game.humanPlayers.get(3).addMove(Snake.Direction.UP);
 			else if (key == KeyEvent.VK_G) Game.humanPlayers.get(3).addMove(Snake.Direction.DOWN);
 			else if (key == KeyEvent.VK_F) Game.humanPlayers.get(3).addMove(Snake.Direction.LEFT);
 			else if (key == KeyEvent.VK_H) Game.humanPlayers.get(3).addMove(Snake.Direction.RIGHT);
 		}
 		
-		if (Game.numberOfPlayers > 3) {
+		if (Game.humanPlayers.containsKey(4)) {
 			if (key == KeyEvent.VK_I) Game.humanPlayers.get(4).addMove(Snake.Direction.UP);
 			else if (key == KeyEvent.VK_K) Game.humanPlayers.get(4).addMove(Snake.Direction.DOWN);
 			else if (key == KeyEvent.VK_J) Game.humanPlayers.get(4).addMove(Snake.Direction.LEFT);
