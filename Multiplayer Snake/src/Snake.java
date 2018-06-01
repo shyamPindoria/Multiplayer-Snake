@@ -26,7 +26,6 @@ public class Snake {
 
 		if (this.snakeBody.isEmpty()) {
 			Game.board.getCell(x, y).setValue(6);
-
 		} else {
 			Game.board.getCell(x, y).setValue(snakeID);
 		}
@@ -39,14 +38,15 @@ public class Snake {
 		for (Cell cell : this.snakeBody) {
 			cell.setValue(0);
 		}
-		
+
 		Game.removePlayer(snakeID);
-		
+
 	}
 
 	public Cell getHead() {
 		return this.snakeBody.get(0);
 	}
+
 
 	public void move() {
 
@@ -61,7 +61,9 @@ public class Snake {
 				int y = temp.getY();
 
 				if (this.currentDirection == Direction.RIGHT) {
-					if (x == 99) {
+					if (x == 99) { // test for collision against wall
+						collision = true;
+					} else if (testSnakeCollision(Game.board.getCell(this.snakeBody.get(i).getIndex() + 1).getValue()) == true) {
 						collision = true;
 					} else {
 						temp = Game.board.getCell(this.snakeBody.get(i).getIndex() + 1);
@@ -70,6 +72,8 @@ public class Snake {
 				if (this.currentDirection == Direction.LEFT) {
 					if (x == 0) {
 						collision = true;
+					} else if (testSnakeCollision(Game.board.getCell(this.snakeBody.get(i).getIndex() - 1).getValue()) == true) {
+						collision = true;
 					} else {
 						temp = Game.board.getCell(this.snakeBody.get(i).getIndex() - 1);
 					}
@@ -77,12 +81,16 @@ public class Snake {
 				if (this.currentDirection == Direction.UP) {
 					if (y == 0) {
 						collision = true;
+					} else if (testSnakeCollision(Game.board.getCell(this.snakeBody.get(i).getIndex() - Game.board.getRows()).getValue())) {
+						collision = true;
 					} else {
 						temp = Game.board.getCell(this.snakeBody.get(i).getIndex() - Game.board.getRows());
 					}
 				}
 				if (this.currentDirection == Direction.DOWN) {
 					if (y == 99) {
+						collision = true;
+					} else if (testSnakeCollision(Game.board.getCell(this.snakeBody.get(i).getIndex() + Game.board.getRows()).getValue())) {
 						collision = true;
 					} else {
 						temp = Game.board.getCell(this.snakeBody.get(i).getIndex() + Game.board.getRows());
@@ -99,12 +107,15 @@ public class Snake {
 		}
 	}
 
-}
+	// test for collision against other player. NOT against wall
+	public boolean testSnakeCollision(int value) {
+		// test against human players (value 1-4), snake head (value 6), and simulated player (value 7-107)
+		if ((value > 0 && value < 5) || value == 6 || (value >= 7 && value <= 107)) {
+			System.out.println("about to hit");
+			return true;
+		}
 
-// LOOP THROUGH MAP USING THIS...
-// Iterator<Entry<Integer, Cell>> entries =
-// Game.board.getCells().entrySet().iterator();
-// while (entries.hasNext()) {
-// Entry<Integer, Cell> entry = entries.next();
-//
-// }
+		return false;
+	}
+
+}

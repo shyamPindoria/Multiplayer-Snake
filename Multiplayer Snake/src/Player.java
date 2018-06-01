@@ -4,6 +4,7 @@ public abstract class Player implements Runnable{
 	private String name;
 	private int score;
 	private Snake snake;
+	//private boolean isDead;
 	
 	
 	public Player(int id, String name) {
@@ -11,6 +12,7 @@ public abstract class Player implements Runnable{
 		this.name = name;
 		this.score = 0;
 		this.setSnake(new Snake(id));
+		//this.isDead = false;
 	}
 	
 	public void addMove(Snake.Direction direction) {
@@ -73,5 +75,13 @@ public abstract class Player implements Runnable{
 	public void setSnake(Snake snake) {
 		this.snake = snake;
 	}
+
+//	public boolean isDead() {
+//		return isDead;
+//	}
+//
+//	public void setDead(boolean isDead) {
+//		this.isDead = isDead;
+//	}
 	
 }

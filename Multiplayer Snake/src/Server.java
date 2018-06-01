@@ -23,8 +23,6 @@ public class Server implements Runnable {
 			System.out.println(Game.humanPlayers.size());
 		}
 		
-		
-		
 		for (SimulatedPlayer player : Game.simulatedPlayers.values()) {
 			pool.submit(player);
 		}
@@ -40,8 +38,6 @@ public class Server implements Runnable {
 		}
 		
 		Game.getUI().update();
-		
-		
 		
 	}
 
