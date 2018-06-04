@@ -20,8 +20,6 @@ public class Server implements Runnable {
 		
 		for (HumanPlayer player : Game.humanPlayers.values()) {
 			pool.submit(player);
-//			System.out.println(Game.humanPlayers.size());
-			System.out.println(player.getSnake().getHead().getIndex());
 		}
 		
 		for (SimulatedPlayer player : Game.simulatedPlayers.values()) {
@@ -32,6 +30,7 @@ public class Server implements Runnable {
 			int playerID = Game.playersToDie.pop();
 			if (playerID <= 4) {
 				Game.humanPlayers.remove(playerID);
+				System.out.println("Player " + playerID + " died");
 			} else {
 				Game.simulatedPlayers.remove(playerID);
 			}
