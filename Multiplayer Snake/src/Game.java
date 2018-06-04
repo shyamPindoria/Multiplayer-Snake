@@ -144,9 +144,10 @@ public class Game {
 		timer.start();
 
 		// place apple in a random cell
-		int randomCell = new Random().nextInt(10000) + 1;
-		board.getCell(randomCell).getPanel().setBackground(COLORS[5]);
-		board.setApple(board.getCell(randomCell).getPanel());
+		int randomIndex = new Random().nextInt(10000) + 1;
+		Cell food = new Cell(5, randomIndex);
+		board.swapCell(food, board.getCell(randomIndex));
+		board.setAppleIndex(randomIndex);
 
 		// note:
 		// food isn't placed and values for each cell are not set

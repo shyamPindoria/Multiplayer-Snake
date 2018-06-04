@@ -5,7 +5,7 @@ import javax.swing.JPanel;
 public class GameBoard {
 	
 	private ConcurrentHashMap<Integer, Cell> cells;
-	private JPanel apple = new JPanel();
+	private Integer appleIndex;
 
 	private int rows;
 	private int cols;
@@ -50,14 +50,6 @@ public class GameBoard {
 		}
 		
 	}
-
-	public JPanel getApple() {
-		return apple;
-	}
-
-	public void setApple(JPanel apple) {
-		this.apple = apple;
-	}
 	
 	public void swapCell(Cell a, Cell b) {
 
@@ -68,4 +60,11 @@ public class GameBoard {
 		b.setIndex(tempIndex);
 	}
 
+	public int getAppleIndex() {
+		return appleIndex;
+	}
+
+	public void setAppleIndex(int appleIndex) {
+		this.appleIndex = appleIndex;
+	}
 }

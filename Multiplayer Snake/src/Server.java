@@ -20,7 +20,8 @@ public class Server implements Runnable {
 		
 		for (HumanPlayer player : Game.humanPlayers.values()) {
 			pool.submit(player);
-			System.out.println(Game.humanPlayers.size());
+//			System.out.println(Game.humanPlayers.size());
+			System.out.println(player.getSnake().getHead().getIndex());
 		}
 		
 		for (SimulatedPlayer player : Game.simulatedPlayers.values()) {
