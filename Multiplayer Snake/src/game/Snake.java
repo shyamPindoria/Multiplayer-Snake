@@ -1,14 +1,15 @@
+package game;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Snake {
 	// could use this to tell where a snakes body is. the int values will be the
 	// index in the cells map
-	ArrayList<Cell> snakeBody;
+	private ArrayList<Cell> snakeBody;
 
 	private int snakeID;
 
-	Direction currentDirection;
+	private Direction currentDirection;
 
 	public enum Direction {
 		RIGHT, LEFT, UP, DOWN;
@@ -19,6 +20,10 @@ public class Snake {
 		this.snakeID = snakeID;
 	}
 
+	public Direction getCurrentDirection() {
+		return this.currentDirection;
+	}
+	
 	public void setCurrentDirection(Direction direction) {
 		currentDirection = direction;
 	}

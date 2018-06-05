@@ -1,3 +1,4 @@
+package game;
 import javax.swing.JPanel;
 
 public class Cell {
@@ -8,7 +9,7 @@ public class Cell {
 	private int index;
 	
 	public Cell(int value, int index) {
-		this.setPanel(new JPanel());
+		this.panel = new JPanel();
 		this.setValue(value);
 		this.setIndex(index);
 	}
@@ -35,10 +36,6 @@ public class Cell {
 
 	public JPanel getPanel() {
 		return panel;
-	}
-
-	public void setPanel(JPanel panel) {
-		this.panel = panel;
 	}
 
 	public int getValue() {

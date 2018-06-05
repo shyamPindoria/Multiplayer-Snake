@@ -1,3 +1,4 @@
+package game;
 public abstract class Player implements Runnable{
 
 	private int playerID;
@@ -11,25 +12,25 @@ public abstract class Player implements Runnable{
 		this.playerID = id;
 		this.name = name;
 		this.score = 0;
-		this.setSnake(new Snake(id));
+		this.snake = new Snake(id);
 		//this.isDead = false;
 	}
 	
 	public void addMove(Snake.Direction direction) {
 		
-		if (this.snake.currentDirection == Snake.Direction.UP) {
+		if (this.snake.getCurrentDirection() == Snake.Direction.UP) {
 			if (direction != Snake.Direction.DOWN) {
 				this.snake.setCurrentDirection(direction);
 			}
-		} else if (this.snake.currentDirection == Snake.Direction.DOWN) {
+		} else if (this.snake.getCurrentDirection() == Snake.Direction.DOWN) {
 			if (direction != Snake.Direction.UP) {
 				this.snake.setCurrentDirection(direction);
 			}
-		} else if (this.snake.currentDirection == Snake.Direction.LEFT) {
+		} else if (this.snake.getCurrentDirection() == Snake.Direction.LEFT) {
 			if (direction != Snake.Direction.RIGHT) {
 				this.snake.setCurrentDirection(direction);
 			}
-		} else if (this.snake.currentDirection == Snake.Direction.RIGHT) {
+		} else if (this.snake.getCurrentDirection() == Snake.Direction.RIGHT) {
 			if (direction != Snake.Direction.LEFT) {
 				this.snake.setCurrentDirection(direction);
 			}
@@ -70,10 +71,6 @@ public abstract class Player implements Runnable{
 
 	public Snake getSnake() {
 		return snake;
-	}
-
-	public void setSnake(Snake snake) {
-		this.snake = snake;
 	}
 
 //	public boolean isDead() {

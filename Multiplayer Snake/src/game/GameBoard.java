@@ -1,6 +1,5 @@
+package game;
 import java.util.concurrent.ConcurrentHashMap;
-
-import javax.swing.JPanel;
 
 public class GameBoard {
 	

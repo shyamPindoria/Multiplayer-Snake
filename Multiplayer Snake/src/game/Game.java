@@ -1,7 +1,7 @@
+package game;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -121,8 +121,6 @@ public class Game {
 			simulatedPlayers.put(i, sim);
 
 		}
-
-		System.out.println(simulatedPlayers.size());
 
 		for (int i = 1; i <= Game.numberOfPlayers; i++) {
 

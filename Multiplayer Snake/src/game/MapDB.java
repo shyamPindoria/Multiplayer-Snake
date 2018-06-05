@@ -1,3 +1,4 @@
+package game;
 import org.mapdb.*;
 import java.io.File;
 import java.util.concurrent.ConcurrentNavigableMap;
