@@ -167,5 +167,11 @@ public class Game {
 	public static synchronized void removePlayer(int id) {
 		playersToDie.push(id);
 	}
+	
+	public static void gameOver() {
+		gameOver = true;
+		server.shutdownExecutorService();
+		ui.gameOver();
+	}
 
 }

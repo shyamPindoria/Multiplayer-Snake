@@ -26,6 +26,8 @@ import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.SwingConstants;
+import java.awt.Dimension;
 
 public class UIController extends JFrame implements ActionListener, KeyListener {
 
@@ -38,6 +40,7 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 	private JPanel contentPane;
 	private JPanel gamePane;
 	private JPanel startPane;
+	private JPanel gameOverPane;
 	private JPanel loginPane;
 	private JPanel boardPane;
 	private JPanel scorePane;
@@ -76,6 +79,13 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 		this.contentPane.add(this.createStartPane(), "startPane");
 
 		this.contentCardLayout.show(this.contentPane, "startPane");
+		
+		this.contentPane.add(this.createGameOverPane(), "gameOver");
+		
+		JButton btnQuit = new JButton("Quit");
+		btnQuit.setActionCommand("Quit");
+		btnQuit.addActionListener(this);
+		gameOverPane.add(btnQuit, BorderLayout.SOUTH);
 		
 		this.setVisible(true);
 
@@ -245,6 +255,18 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 		return playerLoginPane;
 	}
 
+	private JPanel createGameOverPane() {
+		
+		this.gameOverPane = new JPanel();
+		this.gameOverPane.setLayout(new BorderLayout(0, 0));
+		JLabel gameOverLabel = new JLabel("Game Over!");
+		gameOverLabel.setFont(new Font("Lucida Grande", Font.PLAIN, 52));
+		gameOverLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		this.gameOverPane.add(gameOverLabel, BorderLayout.CENTER);
+		return this.gameOverPane;
+		
+	}
+	
 	private JPanel createGamePane() {
 
 		this.gamePane = new JPanel();
@@ -371,6 +393,10 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 		this.updateScores();
 		this.updateGameBoard();
 	}
+	
+	public void gameOver() {
+		this.contentCardLayout.show(contentPane, "gameOver");
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -411,7 +437,9 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 			// Login users
 			Game.createPlayers(credentials);
 
-		} 
+		} else if (e.getActionCommand().equals("Quit")) {
+			System.exit(0);
+		}
 
 	}
 

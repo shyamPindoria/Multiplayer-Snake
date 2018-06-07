@@ -38,6 +38,10 @@ public class Server implements Runnable {
 				
 		}
 		
+		if (Game.simulatedPlayers.size() == 0 && Game.humanPlayers.size() == 0) {
+			Game.gameOver();
+		}
+		
 		Game.getUI().update();
 		
 	}
