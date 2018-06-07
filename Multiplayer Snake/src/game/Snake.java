@@ -84,6 +84,10 @@ public class Snake {
 			Cell food = new Cell(5, randomIndex);
 			Game.board.swapCell(food, Game.board.getCell(randomIndex));
 			Game.board.setAppleIndex(randomIndex);
+			
+			if (this.snakeID <= 4) {
+				Game.humanPlayers.get(snakeID).scored(5);
+			}
 
 		}
 
