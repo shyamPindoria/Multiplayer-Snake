@@ -63,15 +63,12 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 		this.setTitle("Multiplayer Snake");
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setBounds(100, 100, 950, 755);
+		this.setSize(950, 755);
 		this.setResizable(false);
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.setContentPane(this.contentPane);
-
-		// for maximising screen
-		//this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-		//this.setUndecorated(true);
+		
 		addKeyListener(this);
 
 		this.contentCardLayout = new CardLayout(0, 0);
