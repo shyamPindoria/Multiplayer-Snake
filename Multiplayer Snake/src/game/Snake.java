@@ -44,7 +44,7 @@ public class Snake {
 		for (Cell cell : this.snakeBody) {
 			cell.setValue(0);
 		}
-
+		
 		Game.removePlayer(snakeID);
 	}
 

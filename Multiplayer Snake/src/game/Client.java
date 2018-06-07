@@ -45,6 +45,7 @@ public class Client implements Runnable{
 	public void createPlayer() {
 		HumanPlayer player = new HumanPlayer(id, this);
 		Game.addHumanPlayer(player);
+		Game.board.placePlayerOnBoard(player);
 	}
 
 	@Override

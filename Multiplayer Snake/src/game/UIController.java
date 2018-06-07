@@ -48,6 +48,8 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 	private CardLayout contentCardLayout;
 
 	private ArrayList<JLabel> scores;
+	 
+	private ArrayList<JButton> respawnButtons;
 
 	private JComboBox<Integer> comboBoxNumberOfPlayers;
 
@@ -61,7 +63,7 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 		this.setTitle("Multiplayer Snake");
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setBounds(100, 100, 790, 735);
+		this.setBounds(100, 100, 950, 755);
 		this.setResizable(false);
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -282,6 +284,7 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 	private JPanel createScorePane() {
 
 		this.scores = new ArrayList<JLabel>();
+		this.respawnButtons = new ArrayList<JButton>();
 
 		this.scorePane = new JPanel();
 		this.scorePane.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
@@ -307,20 +310,60 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 		for (HumanPlayer player : Game.humanPlayers.values()) {
 
 			JLabel labelPlayerScore = new JLabel(player.getName() + ": " + player.getScore());
+			JButton btnRespawn = new JButton("Respawn");
 			GridBagConstraints gbc_labelPlayerScore = new GridBagConstraints();
+			GridBagConstraints gbc_btnRespawn = new GridBagConstraints();
 			gbc_labelPlayerScore.insets = new Insets(0, 10, 0, 10);
+			gbc_btnRespawn.insets = new Insets(0, 10, 0, 10);
 			if (player.getPlayerID() == Game.numberOfPlayers) {
 				gbc_labelPlayerScore.weighty = 1.0;
+				gbc_btnRespawn.weighty = 1.0;
 				gbc_labelPlayerScore.anchor = GridBagConstraints.NORTH;
+				gbc_btnRespawn.anchor = GridBagConstraints.NORTH;
 			}
 			gbc_labelPlayerScore.gridx = 0;
+			gbc_btnRespawn.gridx = 1;
 			gbc_labelPlayerScore.gridy = player.getPlayerID() + 1;
+			gbc_btnRespawn.gridy = player.getPlayerID() + 1;
 			labelPlayerScore.setForeground(Game.COLORS[player.getPlayerID()]);
 			this.scorePane.add(labelPlayerScore, gbc_labelPlayerScore);
+			btnRespawn.addActionListener(this);
+			btnRespawn.setActionCommand("Respawn" + player.getPlayerID());
+			btnRespawn.setEnabled(false);
+			this.respawnButtons.add(btnRespawn);
+			this.scorePane.add(btnRespawn, gbc_btnRespawn);
 			this.scores.add(labelPlayerScore);
 
 		}
-
+		
+		JLabel[] keys = {
+				new JLabel("user1: arrow keys"),
+				new JLabel("user2: w,a,s,d keys"),
+				new JLabel("user3: t,f,g,h keys"),
+				new JLabel("user4: i,j,k,l keys")
+		};
+		
+		for (int i = 0; i < Game.numberOfPlayers; i++) {
+			GridBagConstraints gbc = new GridBagConstraints();
+			gbc.insets = new Insets(0, 0, 5, 0);
+			gbc.gridwidth = 2;
+			gbc.gridx = 0;
+			gbc.gridy = i + 5;
+			gbc.anchor = GridBagConstraints.SOUTH;
+			keys[i].setForeground(Game.COLORS[i+1]);
+			this.scorePane.add(keys[i], gbc);
+		}
+		
+		JButton btnSimSnakes = new JButton("Add 100 Simulated Snakes");
+		GridBagConstraints gbc_btnSimSnakes = new GridBagConstraints();
+		gbc_btnSimSnakes.insets = new Insets(0, 0, 5, 0);
+		gbc_btnSimSnakes.gridwidth = 2;
+		gbc_btnSimSnakes.gridx = 0;
+		gbc_btnSimSnakes.gridy = Game.numberOfPlayers * 2 + 2;
+		btnSimSnakes.addActionListener(this);
+		btnSimSnakes.setActionCommand("AddSimSnakes");
+		this.scorePane.add(btnSimSnakes, gbc_btnSimSnakes);
+		
 		return this.scorePane;
 	}
 
@@ -366,10 +409,19 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 		this.usernames[playerID - 1].setEnabled(!valid);
 		this.passwords[playerID - 1].setEnabled(!valid);
 	}
+	
+	public void setRespawnButtonEnabled(int id, boolean value) {
+		this.respawnButtons.get(id - 1).setEnabled(value);
+	}
 
 	private void updateScores() {
 		for (int i = 1; i <= Game.numberOfPlayers; i++) {
 			if (Game.humanPlayers.containsKey(i)) {
+				Font f = this.scores.get(i-1).getFont();
+				Map attributes = f.getAttributes();
+				
+				attributes.put(TextAttribute.STRIKETHROUGH, false);
+				this.scores.get(i - 1).setFont(new Font(attributes));
 				this.scores.get(i - 1).setText(Game.humanPlayers.get(i).getName() + ": " + Game.humanPlayers.get(i).getScore());
 			} else {
 				Font f = this.scores.get(i-1).getFont();
@@ -435,9 +487,31 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 
 			}
 
+		} else if (e.getActionCommand().equals("Respawn1")) {
+			gamePane.requestFocusInWindow();
+			Game.clients.get(1).createPlayer();
+			this.setRespawnButtonEnabled(1, false);
+		} else if (e.getActionCommand().equals("Respawn2")) {
+			gamePane.requestFocusInWindow();
+			Game.clients.get(2).createPlayer();
+			this.setRespawnButtonEnabled(2, false);
+		} else if (e.getActionCommand().equals("Respawn3")) {
+			gamePane.requestFocusInWindow();
+			Game.clients.get(3).createPlayer();
+			this.setRespawnButtonEnabled(3, false);
+		} else if (e.getActionCommand().equals("Respawn4")) {
+			gamePane.requestFocusInWindow();
+			Game.clients.get(4).createPlayer();
+			this.setRespawnButtonEnabled(4, false);
+		} else if (e.getActionCommand().equals("AddSimSnakes")) {
+			gamePane.requestFocusInWindow();
+			Game.createSimulatedPlayers();
+			((JButton)e.getSource()).setEnabled(false);
 		} else if (e.getActionCommand().equals("Quit")) {
 			System.exit(0);
 		}
+		
+		
 
 	}
 

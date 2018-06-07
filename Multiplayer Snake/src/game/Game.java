@@ -31,6 +31,8 @@ public class Game {
 	public static ConcurrentHashMap<Integer, HumanPlayer> humanPlayers;
 
 	public static ConcurrentHashMap<Integer, SimulatedPlayer> simulatedPlayers;
+	
+	public static ConcurrentHashMap<Integer, Client> clients;
 
 	public static Stack<Integer> playersToDie;
 
@@ -51,6 +53,8 @@ public class Game {
 		humanPlayers = new ConcurrentHashMap<Integer, HumanPlayer>();
 
 		simulatedPlayers = new ConcurrentHashMap<Integer, SimulatedPlayer>();
+		
+		clients = new ConcurrentHashMap<Integer, Client>();
 
 		playersToDie = new Stack<Integer>();
 
@@ -78,6 +82,7 @@ public class Game {
 		Client client = new Client(id, username, password);
 		Thread t = new Thread(client);
 		t.start();
+		clients.put(id, client);
 
 	}
 	
@@ -99,12 +104,6 @@ public class Game {
 
 	public static void initGame() {
 
-		for (HumanPlayer player : humanPlayers.values()) {
-			board.placePlayerOnBoard(player);
-		}
-		
-		createSimulatedPlayers();
-
 		// Start timer
 		timer.start();
 
@@ -112,7 +111,7 @@ public class Game {
 
 	}
 	
-	private static void createSimulatedPlayers() {
+	public static void createSimulatedPlayers() {
 		
 		for(int i = 7; i <= 107; i++) {
 
@@ -126,6 +125,7 @@ public class Game {
 
 	public synchronized static void removePlayer(int id) {
 		playersToDie.push(id);
+		ui.setRespawnButtonEnabled(id, true);
 	}
 	
 	public static void gameOver() {
