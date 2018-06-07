@@ -2,35 +2,28 @@ package game;
 
 public class Credentials implements Runnable{
 
-	private int playerID;
-	private String username;
-	private String password;
+	private Client client;
 	
-	public Credentials(int playerID, String username, String password) {
-		this.playerID = playerID;
-		this.username = username;
-		this.password = password;
-	}
-	
-	public String getUsername() {
-		return this.username;
+	public Credentials(Client client) {
+		this.client = client;
 	}
 
 	@Override
 	public void run() {
 		boolean valid = false;
 		// Check the credentials
-		if (Game.db.getUsers().get(this.username) != null && Game.db.getUsers().get(this.username).equals(this.password)) {
+		if (Game.db.getUsers().get(client.getUsername()) != null && Game.db.getUsers().get(client.getUsername()).equals(client.getPassword())) {
 			
-			System.out.println(this.username + " logged in");
+			System.out.println(client.getUsername() + " logged in");
 			
 			valid = true;
+			client.createPlayer();
 		} else {
 			valid = false;
 		}
 		
-		Game.getUI().setInvalidLoginDetails(this.playerID, valid);
-		Game.humanPlayers.get(this.playerID).setValid(valid);
+		Game.getUI().setInvalidLoginDetails(client.getID(), valid);
+		client.setAuthenticated(valid);
 		
 	}
 

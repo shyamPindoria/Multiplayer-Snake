@@ -2,16 +2,17 @@ package game;
 
 public class HumanPlayer extends Player {
 	
-	private String username;
-	private String password;
-	private boolean isValid;
+	private Client client;
 	
-	public HumanPlayer(int id, String username, String password) {
+	public HumanPlayer(int id, Client client) {
 		
-		super(id, username);
-		this.username = username;
-		this.password = password;
-		this.isValid = false;
+		super(id, client.getUsername());
+		this.client = client;
+		
+	}
+	
+	public Client getClient() {
+		return this.client;
 	}
 	
 	@Override
@@ -19,22 +20,6 @@ public class HumanPlayer extends Player {
 		
 		this.getSnake().move();
 		
-	}
-	
-	public String getUsername() {
-		return this.username;
-	}
-	
-	public String getPassword() {
-		return this.password;
-	}
-	
-	public boolean isValid() {
-		return this.isValid;
-	}
-	
-	public void setValid(boolean value) {
-		this.isValid = value;
 	}
 	
 	@Override

@@ -48,16 +48,15 @@ public class Server implements Runnable {
 
 	private void loginPlayers() {
 		try {
-			HumanPlayer player = Game.loginBuffer.poll();
+			Client client = Game.loginBuffer.poll();
 
-			if (player != null && !player.isValid()) {
-				pool.submit(new Credentials(player.getPlayerID(), player.getUsername(), player.getPassword()));
+			if (client != null && !client.isAuthenticated()) {
+				pool.submit(new Credentials(client));
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		Game.getUI().showGameBoard();
 	}
 
@@ -73,13 +72,8 @@ public class Server implements Runnable {
 	@Override
 	public void run() {
 		
-		while (!Game.gameOver) {
-			if (!Game.gameStarted) {
-				this.loginPlayers();
-			}
-			
-			//this.update();
-			
+		while (!Game.gameStarted) {
+			this.loginPlayers();
 		}
 
 	}

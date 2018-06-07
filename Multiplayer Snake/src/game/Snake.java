@@ -80,10 +80,7 @@ public class Snake {
 				break;
 			}
 
-			int randomIndex = new Random().nextInt(10000) + 1;
-			Cell food = new Cell(5, randomIndex);
-			Game.board.swapCell(food, Game.board.getCell(randomIndex));
-			Game.board.setAppleIndex(randomIndex);
+			Game.board.spawnApple();
 			
 			if (this.snakeID <= 4) {
 				Game.humanPlayers.get(snakeID).scored(5);

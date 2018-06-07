@@ -57,7 +57,7 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 
 
 	public UIController() {
-		
+
 		this.setTitle("Multiplayer Snake");
 
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -79,14 +79,14 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 		this.contentPane.add(this.createStartPane(), "startPane");
 
 		this.contentCardLayout.show(this.contentPane, "startPane");
-		
+
 		this.contentPane.add(this.createGameOverPane(), "gameOver");
-		
+
 		JButton btnQuit = new JButton("Quit");
 		btnQuit.setActionCommand("Quit");
 		btnQuit.addActionListener(this);
 		gameOverPane.add(btnQuit, BorderLayout.SOUTH);
-		
+
 		this.setVisible(true);
 
 	}
@@ -256,7 +256,7 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 	}
 
 	private JPanel createGameOverPane() {
-		
+
 		this.gameOverPane = new JPanel();
 		this.gameOverPane.setLayout(new BorderLayout(0, 0));
 		JLabel gameOverLabel = new JLabel("Game Over!");
@@ -264,9 +264,9 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 		gameOverLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		this.gameOverPane.add(gameOverLabel, BorderLayout.CENTER);
 		return this.gameOverPane;
-		
+
 	}
-	
+
 	private JPanel createGamePane() {
 
 		this.gamePane = new JPanel();
@@ -275,7 +275,7 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 		this.gamePane.add(createScorePane(), BorderLayout.WEST);
 
 		this.gamePane.add(createBoardPane(), BorderLayout.CENTER);
-		
+
 		return this.gamePane;
 	}
 
@@ -341,14 +341,14 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 			Game.gameStarted = true;
 
 			// Check if all players have successfully logged in
-			for (HumanPlayer player : Game.humanPlayers.values()) {
+			for (int i = 1; i <= Game.numberOfPlayers; i++) {
 
-				if (!player.isValid()) {
+				if (!Game.humanPlayers.containsKey(i) || !Game.humanPlayers.get(i).getClient().isAuthenticated()) {
 					Game.gameStarted = false;
 				}
 			}
 
-			// Show game pan if all have logged in
+			// Show game pane if all have logged in
 			if (Game.gameStarted) {
 				this.contentPane.add(this.createGamePane(), "gamePane");
 				this.contentCardLayout.show(this.contentPane, "gamePane");
@@ -363,6 +363,8 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 
 	public void setInvalidLoginDetails(int playerID, boolean valid) {
 		this.invalidLoginDetails[playerID - 1].setVisible(!valid);
+		this.usernames[playerID - 1].setEnabled(!valid);
+		this.passwords[playerID - 1].setEnabled(!valid);
 	}
 
 	private void updateScores() {
@@ -377,30 +379,30 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 			}
 		}
 	}
-	
+
 	private void updateGameBoard() {
-		
+
 		this.boardPane.removeAll();
 		this.boardPane.revalidate();
-		
+
 		for (int i = 0; i < Game.board.getRows() * Game.board.getCols(); i++) {
 			this.boardPane.add(Game.board.getCell(i).getPanel());
 		}
-		
+
 	}
 
 	public void update() {
 		this.updateScores();
 		this.updateGameBoard();
 	}
-	
+
 	public void gameOver() {
 		this.contentCardLayout.show(contentPane, "gameOver");
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+
 		// If start button was clicked
 		if (e.getActionCommand().equals("Start")) {
 			// Number of players
@@ -426,8 +428,10 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 			// Get the usernames and passwords from the textfields
 			for (int i = 0; i < Game.numberOfPlayers; i++) {
 
-				// Create new credentials
-				Game.createPlayer(i + 1, this.usernames[i].getText(), new String(this.passwords[i].getPassword()));
+				// Create new Client thread
+				if (usernames[i].isEnabled()) {
+					Game.createClient(i + 1, this.usernames[i].getText(), new String(this.passwords[i].getPassword()));
+				}
 
 			}
 
@@ -440,35 +444,35 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
-		
+
 		if (Game.humanPlayers.containsKey(1)) {
 			if (key == KeyEvent.VK_UP) Game.humanPlayers.get(1).addMove(Snake.Direction.UP);
 			else if (key == KeyEvent.VK_DOWN) Game.humanPlayers.get(1).addMove(Snake.Direction.DOWN);
 			else if (key == KeyEvent.VK_LEFT) Game.humanPlayers.get(1).addMove(Snake.Direction.LEFT);
 			else if (key == KeyEvent.VK_RIGHT) Game.humanPlayers.get(1).addMove(Snake.Direction.RIGHT);
 		}
-		
+
 		if (Game.humanPlayers.containsKey(2)) {
 			if (key == KeyEvent.VK_W) Game.humanPlayers.get(2).addMove(Snake.Direction.UP);
 			else if (key == KeyEvent.VK_S) Game.humanPlayers.get(2).addMove(Snake.Direction.DOWN);
 			else if (key == KeyEvent.VK_A) Game.humanPlayers.get(2).addMove(Snake.Direction.LEFT);
 			else if (key == KeyEvent.VK_D) Game.humanPlayers.get(2).addMove(Snake.Direction.RIGHT);
 		}
-		
+
 		if (Game.humanPlayers.containsKey(3)) {
 			if (key == KeyEvent.VK_T) Game.humanPlayers.get(3).addMove(Snake.Direction.UP);
 			else if (key == KeyEvent.VK_G) Game.humanPlayers.get(3).addMove(Snake.Direction.DOWN);
 			else if (key == KeyEvent.VK_F) Game.humanPlayers.get(3).addMove(Snake.Direction.LEFT);
 			else if (key == KeyEvent.VK_H) Game.humanPlayers.get(3).addMove(Snake.Direction.RIGHT);
 		}
-		
+
 		if (Game.humanPlayers.containsKey(4)) {
 			if (key == KeyEvent.VK_I) Game.humanPlayers.get(4).addMove(Snake.Direction.UP);
 			else if (key == KeyEvent.VK_K) Game.humanPlayers.get(4).addMove(Snake.Direction.DOWN);
 			else if (key == KeyEvent.VK_J) Game.humanPlayers.get(4).addMove(Snake.Direction.LEFT);
 			else if (key == KeyEvent.VK_L) Game.humanPlayers.get(4).addMove(Snake.Direction.RIGHT);
 		}
-		
+
 	}
 
 	@Override

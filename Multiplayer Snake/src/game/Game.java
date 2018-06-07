@@ -2,7 +2,6 @@ package game;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Random;
 import java.util.Stack;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -35,7 +34,7 @@ public class Game {
 
 	public static Stack<Integer> playersToDie;
 
-	public static ArrayBlockingQueue<HumanPlayer> loginBuffer;
+	public static ArrayBlockingQueue<Client> loginBuffer;
 
 	public static boolean gameStarted = false;
 
@@ -55,7 +54,7 @@ public class Game {
 
 		playersToDie = new Stack<Integer>();
 
-		loginBuffer = new ArrayBlockingQueue<HumanPlayer>(4);
+		loginBuffer = new ArrayBlockingQueue<Client>(4);
 
 		db = new MapDB();
 
@@ -65,31 +64,33 @@ public class Game {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				server.update();
+				if (gameStarted && !gameOver) {
+					server.update();
+				}
 			}
 
 		});
 
 	}
 
-	/**
-	 * Logs in the players
-	 * 
-	 * @param credentials
-	 *            Credentials of the players
-	 * @return
-	 * @return boolean[] containing the results of the login process
-	 */
-	public static void createPlayer(int id, String username, String password) {
+	public synchronized static void createClient(int id, String username, String password) {
 
-		HumanPlayer player = new HumanPlayer(id, username, password);
-		humanPlayers.put(id, player);
+		Client client = new Client(id, username, password);
+		Thread t = new Thread(client);
+		t.start();
+
+	}
+	
+	public synchronized static void addHumanPlayer(HumanPlayer player) {
+		humanPlayers.put(player.getPlayerID(), player);
+	}
+	
+	public synchronized static void addToLoginBuffer(Client client) {
 		try {
-			loginBuffer.put(player);
+			loginBuffer.put(client);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	public static UIController getUI() {
@@ -98,71 +99,32 @@ public class Game {
 
 	public static void initGame() {
 
-		for(int i = 7; i <= 107; i++) {
-
-			SimulatedPlayer sim = new SimulatedPlayer(i, "Bot " + (i - 6));
-			Random r = new Random();
-			int randomHeadX = r.nextInt(96);
-			int randomHeadY = r.nextInt(96);
-			if ( board.getCell(randomHeadX, randomHeadY).getValue() == 0 &&
-					board.getCell(randomHeadX+1, randomHeadY).getValue() == 0 &&
-					board.getCell(randomHeadX+1, randomHeadY).getValue() == 0 ) {
-
-				sim.getSnake().addBodyPart(randomHeadX, randomHeadY);
-				sim.getSnake().addBodyPart(randomHeadX+1, randomHeadY);
-				sim.getSnake().addBodyPart(randomHeadX+2, randomHeadY);
-
-			}
-
-			sim.getSnake().setCurrentDirection(Snake.Direction.LEFT);
-
-			simulatedPlayers.put(i, sim);
-
+		for (HumanPlayer player : humanPlayers.values()) {
+			board.placePlayerOnBoard(player);
 		}
-
-		for (int i = 1; i <= Game.numberOfPlayers; i++) {
-
-			Snake playerSnake = humanPlayers.get(i).getSnake();
-			if (i == 1) {
-				// First part added is a head by default i.e cell has index 7
-				playerSnake.addBodyPart(88, 10);
-				playerSnake.addBodyPart(89, 10);
-				playerSnake.addBodyPart(90, 10);
-				playerSnake.setCurrentDirection(Snake.Direction.LEFT);
-			} else if (i == 2) {
-				playerSnake.addBodyPart(10, 13);
-				playerSnake.addBodyPart(10, 12);
-				playerSnake.addBodyPart(10, 11);
-				playerSnake.setCurrentDirection(Snake.Direction.DOWN);
-			} else if (i == 3) {
-				playerSnake.addBodyPart(12, 90);
-				playerSnake.addBodyPart(11, 90);
-				playerSnake.addBodyPart(10, 90);
-				playerSnake.setCurrentDirection(Snake.Direction.RIGHT);
-			} else if (i == 4) {
-				playerSnake.addBodyPart(90, 91);
-				playerSnake.addBodyPart(90, 92);
-				playerSnake.addBodyPart(90, 93);
-				playerSnake.setCurrentDirection(Snake.Direction.UP);
-			}
-		}
+		
+		createSimulatedPlayers();
 
 		// Start timer
 		timer.start();
 
-		// place apple in a random cell
-		int randomIndex = new Random().nextInt(10000) + 1;
-		Cell food = new Cell(5, randomIndex);
-		board.swapCell(food, board.getCell(randomIndex));
-		board.setAppleIndex(randomIndex);
-
-
-		// note:
-		// food isn't placed and values for each cell are not set
+		board.spawnApple();
 
 	}
+	
+	private static void createSimulatedPlayers() {
+		
+		for(int i = 7; i <= 107; i++) {
 
-	public static synchronized void removePlayer(int id) {
+			SimulatedPlayer sim = new SimulatedPlayer(i, "Bot " + (i - 6));
+			board.placePlayerOnBoard(sim);
+			simulatedPlayers.put(i, sim);
+
+		}
+		
+	}
+
+	public synchronized static void removePlayer(int id) {
 		playersToDie.push(id);
 	}
 	
