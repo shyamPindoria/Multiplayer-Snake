@@ -80,18 +80,16 @@ public class Game {
 	 * @return
 	 * @return boolean[] containing the results of the login process
 	 */
-	public static void createPlayers(Credentials[] credentials) {
+	public static void createPlayer(int id, String username, String password) {
 
-		for (int i = 1; i <= Game.numberOfPlayers; i++) {
-			HumanPlayer player = new HumanPlayer(i, credentials[i - 1]);
-			humanPlayers.put(i, player);
-			try {
-				loginBuffer.put(player);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-
+		HumanPlayer player = new HumanPlayer(id, username, password);
+		humanPlayers.put(id, player);
+		try {
+			loginBuffer.put(player);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
+
 	}
 
 	public static UIController getUI() {

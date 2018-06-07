@@ -343,7 +343,7 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 			// Check if all players have successfully logged in
 			for (HumanPlayer player : Game.humanPlayers.values()) {
 
-				if (!player.getCredentials().isValid()) {
+				if (!player.isValid()) {
 					Game.gameStarted = false;
 				}
 			}
@@ -423,19 +423,13 @@ public class UIController extends JFrame implements ActionListener, KeyListener 
 				lbl.setVisible(false);
 			}
 
-			// Array to be passed to Game class
-			Credentials[] credentials = new Credentials[Game.numberOfPlayers];
-
 			// Get the usernames and passwords from the textfields
 			for (int i = 0; i < Game.numberOfPlayers; i++) {
 
 				// Create new credentials
-				credentials[i] = new Credentials(i + 1, this.usernames[i].getText(), new String(this.passwords[i].getPassword()));
+				Game.createPlayer(i + 1, this.usernames[i].getText(), new String(this.passwords[i].getPassword()));
 
 			}
-
-			// Login users
-			Game.createPlayers(credentials);
 
 		} else if (e.getActionCommand().equals("Quit")) {
 			System.exit(0);

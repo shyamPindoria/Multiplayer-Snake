@@ -18,7 +18,7 @@ public class PlayerTest {
 	
 	@Test
 	public void testCreateHumanPlayer() {
-		HumanPlayer player = new HumanPlayer(1, new Credentials(1, "user", "password"));
+		HumanPlayer player = new HumanPlayer(1, "user", "password");
 		assertEquals("Username set incorrectly.", "user", player.getName());
 		assertEquals("Player ID set incorrectly.", 1, player.getPlayerID());
 	}

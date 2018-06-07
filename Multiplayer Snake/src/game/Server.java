@@ -50,8 +50,8 @@ public class Server implements Runnable {
 		try {
 			HumanPlayer player = Game.loginBuffer.poll();
 
-			if (player != null && !player.getCredentials().isValid()) {
-				pool.submit(player.getCredentials());
+			if (player != null && !player.isValid()) {
+				pool.submit(new Credentials(player.getPlayerID(), player.getUsername(), player.getPassword()));
 			}
 
 		} catch (Exception e) {

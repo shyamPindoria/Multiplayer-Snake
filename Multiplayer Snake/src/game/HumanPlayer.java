@@ -2,12 +2,16 @@ package game;
 
 public class HumanPlayer extends Player {
 	
-	private Credentials credentials;
+	private String username;
+	private String password;
+	private boolean isValid;
 	
-	public HumanPlayer(int id, Credentials credentials) {
+	public HumanPlayer(int id, String username, String password) {
 		
-		super(id, credentials.getUsername());
-		this.credentials = credentials;
+		super(id, username);
+		this.username = username;
+		this.password = password;
+		this.isValid = false;
 	}
 	
 	@Override
@@ -17,8 +21,20 @@ public class HumanPlayer extends Player {
 		
 	}
 	
-	public Credentials getCredentials() {
-		return this.credentials;
+	public String getUsername() {
+		return this.username;
+	}
+	
+	public String getPassword() {
+		return this.password;
+	}
+	
+	public boolean isValid() {
+		return this.isValid;
+	}
+	
+	public void setValid(boolean value) {
+		this.isValid = value;
 	}
 	
 	@Override

@@ -6,13 +6,10 @@ public class Credentials implements Runnable{
 	private String username;
 	private String password;
 	
-	private boolean valid;
-	
 	public Credentials(int playerID, String username, String password) {
 		this.playerID = playerID;
 		this.username = username;
 		this.password = password;
-		this.valid = false;
 	}
 	
 	public String getUsername() {
@@ -21,23 +18,20 @@ public class Credentials implements Runnable{
 
 	@Override
 	public void run() {
-		
+		boolean valid = false;
 		// Check the credentials
 		if (Game.db.getUsers().get(this.username) != null && Game.db.getUsers().get(this.username).equals(this.password)) {
 			
 			System.out.println(this.username + " logged in");
 			
-			this.valid = true;
+			valid = true;
 		} else {
-			this.valid = false;
+			valid = false;
 		}
 		
-		Game.getUI().setInvalidLoginDetails(this.playerID, this.valid);
+		Game.getUI().setInvalidLoginDetails(this.playerID, valid);
+		Game.humanPlayers.get(this.playerID).setValid(valid);
 		
-	}
-
-	public boolean isValid() {
-		return valid;
 	}
 
 }
